@@ -1,5 +1,5 @@
 <?php
-class TileVisuPVOverview extends IPSModule
+class TileVisuPhotovoltaikOverviewTile extends IPSModule
 {
     public function Create()
     {
