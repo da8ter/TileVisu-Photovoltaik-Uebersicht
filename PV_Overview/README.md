@@ -1,2 +1,2 @@
-# Bewohnerstatus
-Beschreibung des Moduls.
+# Photovoltaik-Übersicht
+Dokumentation folgt...
