@@ -14,8 +14,8 @@
 ### 1. Funktionsumfang
 
 * Die "Photovoltaik-Übersicht Kachel" dient der Visualisierung von PV-Produktion, Export, Import, Eigenverbrauch inkl. Batteriespeicher für den aktuellen Tag. 
-* #### Wichtig: Alle Variablen benötigen ein aktives Logging. Die Kachel bezieht die aktuellen Tageswerte aus dem Archiv!
-Wie bei all meinen Kacheln kann das Aussehen weitestgehend frei konfiguriert werden. Möglich sind eigene Hintergrundbilder (inkl. einstellbarer Transparenz), Hintergrundfarben und Schriftgrößen.
+* #### Wichtig: Alle Variablen benötigen ein aktives Logging und müssen werte als kWh bereitstellen. Die Kachel bezieht die aktuellen Tageswerte aus dem Archiv! Unterschiedliche Einheiten wie kWh und wH führen zu fehlerhaften Anzeigen.
+* Wie bei all meinen Kacheln kann das Aussehen weitestgehend frei konfiguriert werden. Möglich sind eigene Hintergrundbilder (inkl. einstellbarer Transparenz), Hintergrundfarben und Schriftgrößen.
 
 ### 2. Voraussetzungen
 
@@ -25,12 +25,12 @@ Wie bei all meinen Kacheln kann das Aussehen weitestgehend frei konfiguriert wer
 
 * Über den Module Store
 * Über das Module Control folgende URL hinzufügen
-https://github.com/da8ter/TileVisu-Bild-Variable.git
+https://github.com/da8ter/TileVisu-Photovoltaik-Uebersicht.git
 
 
 ### 4. Einrichten der Instanzen in IP-Symcon
 
- Unter 'Instanz hinzufügen' kann die Wallbox-Kachel mithilfe des Schnellfilters gefunden werden. (Suchbegriff: Variable, Bild, TileVisu oder Kachel)  
+ Unter 'Instanz hinzufügen' kann die Wallbox-Kachel mithilfe des Schnellfilters gefunden werden. (Suchbegriff: Photovoltaik, Übersicht, TileVisu oder Kachel)  
 	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
 ### 5. Kachelkonfiguration
@@ -49,7 +49,7 @@ Kachelhintergrundfarbe|Farbe des Kachelhintergrunds (wird nur bei eingestellter 
 __Variable__
 Name     | Beschreibung
 -------- | ------------------
-Variable|Die Variable die angezeigt werden soll. Text und Icon werden aus dem Variablenprofil ausgelesen.
+Verbrauch berechnen|Berechnet den Tagesverbrauch aus PV-Produktion und Strombezug (import).
 Einstellung|Öffnet ein Fenster mit weiteren Konfigurationsmöglichkeiten.
 Schriftgröße|Stellt die Schriftgröße der Buttonbeschriftung ein.
 
