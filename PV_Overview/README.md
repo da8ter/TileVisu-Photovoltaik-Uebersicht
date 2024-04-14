@@ -14,7 +14,7 @@
 ### 1. Funktionsumfang
 
 * Die "Photovoltaik-Übersicht Kachel" dient der Visualisierung von PV-Produktion, Export, Import, Eigenverbrauch inkl. Batteriespeicher für den aktuellen Tag. 
-# Wichtig: Alle Variablen benötigen ein aktives Logging. Die Kachel bezieht die aktuellen Tageswerte aus dem Archiv!
+### Wichtig: Alle Variablen benötigen ein aktives Logging. Die Kachel bezieht die aktuellen Tageswerte aus dem Archiv!
 Wie bei all meinen Kacheln kann das Aussehen weitestgehend frei konfiguriert werden. Möglich sind eigene Hintergrundbilder (inkl. einstellbarer Transparenz), Hintergrundfarben und Schriftgrößen.
 
 ### 2. Voraussetzungen
