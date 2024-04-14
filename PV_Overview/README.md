@@ -9,7 +9,8 @@
 2. [Voraussetzungen](#2-voraussetzungen)
 3. [Software-Installation](#3-software-installation)
 4. [Einrichten der Instanzen in IP-Symcon](#4-einrichten-der-instanzen-in-ip-symcon)
-5. [Kachelkonfiguration](#5-Kachelkonfiguration)
+5. [Begriffsdefinition](#5-begriffsdefinition)
+6. [Kachelkonfiguration](#6-Kachelkonfiguration)
 
 ### 1. Funktionsumfang
 
@@ -33,19 +34,21 @@ https://github.com/da8ter/TileVisu-Photovoltaik-Uebersicht.git
  Unter 'Instanz hinzufügen' kann die Wallbox-Kachel mithilfe des Schnellfilters gefunden werden. (Suchbegriff: Photovoltaik, Übersicht, TileVisu oder Kachel)  
 	- Weitere Informationen zum Hinzufügen von Instanzen in der [Dokumentation der Instanzen](https://www.symcon.de/service/dokumentation/konzepte/instanzen/#Instanz_hinzufügen)
 
-### 5. Kachelkonfiguration
+### 5. Begriffsdefinition
+
+* Produktion: Der von der PV-Analge produzierte Strom.
+* Eigenverbrauch: Der prozentuale Anteil der PV Produktion welcher direkt im Haus selbst verbraucht wurde.
+* Import/Strombezug: Der Strom welcher aus dem Netz zugekauft werden musst. 
+* Verbrauch: Der komplett im Haus verbrauchte Strom. Egal ob aus dem Netz oder der PV-Anlage.
+* Eigenproduktion: Der prozentuale Anteil vom Verbrauch der durch den PV Strom abgedeckt wurde.
+* Export/Einspeisung: Der Strom welcher von der PV-Anlage erzeugt und in das Stromnetz eingespeist wurde.
+
+
+### 6. Kachelkonfiguration
 
 Grundsätzlicher Hinweis:
 Standardmäßig sind alle Objekte in der Kachelansicht ausgeblendet. Sie werden nur angezeigt, wenn du sie entsprechend konfigurierst. Bitte beachte, dass nicht alle Änderungen an der Konfiguration automatisch in der Kachelansicht sichtbar sind. Sollten Änderungen nicht sofort erscheinen, lade bitte die Seite oder den iFrame neu.
 
-### 6. Begriffsdefinition
-
-Produktion: Der von der PV-Analge produzierte Strom.
-Eigenverbrauch: Der prozentuale Anteil der PV Produktion welcher direkt im Haus selbst verbraucht wurde.
-Import/Strombezug: Der Strom welcher aus dem Netz zugekauft werden musst. 
-Verbrauch: Der komplett im Haus verbrauchte Strom. Egal ob aus dem Netz oder der PV-Anlage.
-Eigenproduktion: Der prozentuale Anteil vom Verbrauch der durch den PV Strom abgedeckt wurde.
-Export/Einspeisung: Der Strom welcher von der PV-Anlage erzeugt und in das Stromnetz eingespeist wurde.
 
 __Kacheldesign__
 Name     | Beschreibung
