@@ -39,7 +39,8 @@
               "type": "SelectVariable",
               "name": "ProduktionWert",
               "caption": "Production/Generation:",
-              "validVariableTypes": []
+              "validVariableTypes": [],
+              "requiredLogging": 1
             },
             {
               "type": "ValidationTextBox",
@@ -50,20 +51,23 @@
               "type": "SelectVariable",
               "name": "SpeicherEntladungWert",
               "caption": "Discharge Battery:",
-              "validVariableTypes": []
+              "validVariableTypes": [],
+              "requiredLogging": 1
             },
             {
               "type": "SelectVariable",
               "name": "SpeicherBeladungWert",
               "caption": "Charge Battery:",
-              "validVariableTypes": []
+              "validVariableTypes": [],
+              "requiredLogging": 1
             },
             {
               "type": "SelectVariable",
               "name": "VerbrauchWert",
               "caption": "Consumption:",
               "validVariableTypes": [],
-              "visible": ""
+              "visible": "",
+              "requiredLogging": 1
             },
             {
               "type": "ValidationTextBox",
@@ -74,7 +78,8 @@
               "type": "SelectVariable",
               "name": "ImportWert",
               "caption": "Import/Purchase:",
-              "validVariableTypes": []
+              "validVariableTypes": [],
+              "requiredLogging": 1
             },
             {
               "type": "ValidationTextBox",
@@ -85,7 +90,8 @@
               "type": "SelectVariable",
               "name": "ExportWert",
               "caption": "Export/Feed-in:",
-              "validVariableTypes": []
+              "validVariableTypes": [],
+              "requiredLogging": 1
             },
             {
               "type": "ValidationTextBox",
