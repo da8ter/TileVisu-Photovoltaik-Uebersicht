@@ -273,9 +273,15 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['eigenverbrauchlabel'] =  $this->ReadPropertyString('EigenverbrauchLabel');
             $result['eigenproduktionlabel'] =  $this->ReadPropertyString('EigenproduktionLabel');
             
-            $idzeitraum = $this->GetIDForIdent("Zeitraum")
+            // Holt die ID der Variable "Zeitraum"
+            $idzeitraum = $this->GetIDForIdent("Zeitraum");
+
+            // Aktualisiert den Wert für die Visualisierung mit dem aktuellen Wert der Variable "Zeitraum"
             $this->UpdateVisualizationValue(json_encode(['zeitraum' => GetValueInteger($idzeitraum)]));
-            $result['zeitraum'] =  GetValueInteger('Zeitraum');
+
+            // Speichert den aktuellen Wert der Variable "Zeitraum" im Ergebnisarray
+            $result['zeitraum'] = GetValueInteger($idzeitraum);
+
 
             
             $archivID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
