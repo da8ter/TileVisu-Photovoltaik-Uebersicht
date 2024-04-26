@@ -35,7 +35,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyFloat("Eckenradius", 6);
         $this->RegisterPropertyInteger("EinspeisungFarbe", 2598689);
         $this->RegisterPropertyInteger("ZukaufFarbe", 9830400);
-        $this->RegisterAttributeInteger("Zeitraum", 1);
+        $this->RegisterPropertyInteger("Zeitraum", 1);
+        $this->RegisterVariableInteger("Zeitraum", "Anzeige Zeitraum", "");
 
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
         $this->SetVisualizationType(1);
@@ -210,7 +211,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $this->UpdateVisualizationValue(json_encode(['eigenverbrauch' => $eigenverbrauch]));
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion' => $eigenproduktion]));
 
-                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadAttributeInteger("Zeitraum")]));
+                        $idzeitraum = $this->GetIDForIdent("Zeitraum")
+                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => GetValueInteger($idzeitraum)]));
                         break; // Beende die Schleife, da der passende Wert gefunden wurde
 
                 }
@@ -220,9 +222,16 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
 
     public function RequestAction($Ident, $value) {
-        $this->WriteAttributeInteger($Ident, $value);
-        var_dump($valu);
-
+        // Nachrichten von der HTML-Darstellung schicken immer den Ident passend zur Eigenschaft und im Wert die Differenz, welche auf die Variable gerechnet werden soll
+        $variableID = $this->ReadPropertyInteger($Ident);
+        if (!IPS_VariableExists($variableID)) {
+            $this->SendDebug('Error in RequestAction', 'Variable to be updated does not exist', 0);
+            return;
+        }
+            // Umschalten des Werts der Variable
+        $currentValue = GetValue($variableID);
+        //SetValue($variableID, !$currentValue);
+        RequestAction($variableID, !$currentValue);
     }
 
 
@@ -263,8 +272,11 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['verbrauchlabel'] =  $this->ReadPropertyString('VerbrauchLabel');
             $result['eigenverbrauchlabel'] =  $this->ReadPropertyString('EigenverbrauchLabel');
             $result['eigenproduktionlabel'] =  $this->ReadPropertyString('EigenproduktionLabel');
-            $result['zeitraum'] =  $this->ReadAttributeInteger('Zeitraum');
             
+            $idzeitraum = $this->GetIDForIdent("Zeitraum")
+            $this->UpdateVisualizationValue(json_encode(['zeitraum' => GetValueInteger($idzeitraum)]));
+            $result['zeitraum'] =  GetValueInteger('Zeitraum');
+
             
             $archivID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
 
