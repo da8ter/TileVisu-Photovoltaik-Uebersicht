@@ -220,7 +220,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
 
     public function RequestAction($Ident, $value) {
-        WriteAttributeInteger($Ident, $value);
+        $this->WriteAttributeInteger($Ident, $value);
 
     }
 
