@@ -35,6 +35,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyFloat("Eckenradius", 6);
         $this->RegisterPropertyInteger("EinspeisungFarbe", 2598689);
         $this->RegisterPropertyInteger("ZukaufFarbe", 9830400);
+        $this->RegisterAttributeInteger("Zeitraum", 1);
 
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
         $this->SetVisualizationType(1);
@@ -75,7 +76,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         }
 
 
-        foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert'] as $VariableProperty)        {
+        foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert', 'Zeitraum'] as $VariableProperty)        {
             $this->RegisterMessage($this->ReadPropertyInteger($VariableProperty), VM_UPDATE);
         }
 
@@ -86,7 +87,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
     public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     {
 
-        foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert'] as $index => $VariableProperty)
+        foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert', 'Zeitraum'] as $index => $VariableProperty)
         {
             if ($SenderID === $this->ReadPropertyInteger($VariableProperty))
             {
@@ -156,7 +157,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $export = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
-                            $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                            $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1, strtotime("today 00:00"), time(), 0);
                             if (!empty($export_heute_archiv)) {
                                 $export = round($export_heute_archiv[0]['Avg'], 2);
                             }
@@ -217,16 +218,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
 
     public function RequestAction($Ident, $value) {
-        // Nachrichten von der HTML-Darstellung schicken immer den Ident passend zur Eigenschaft und im Wert die Differenz, welche auf die Variable gerechnet werden soll
-        $variableID = $this->ReadPropertyInteger($Ident);
-        if (!IPS_VariableExists($variableID)) {
-            $this->SendDebug('Error in RequestAction', 'Variable to be updated does not exist', 0);
-            return;
-        }
-            // Umschalten des Werts der Variable
-        $currentValue = GetValue($variableID);
-        //SetValue($variableID, !$currentValue);
-        RequestAction($variableID, !$currentValue);
+        WriteAttributeInteger($Ident, $value);
+
     }
 
 
