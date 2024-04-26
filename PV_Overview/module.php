@@ -222,14 +222,23 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
 
     public function RequestAction($Ident, $value) {
-        // Nachrichten von der HTML-Darstellung schicken immer den Ident passend zur Eigenschaft und im Wert die Differenz, welche auf die Variable gerechnet werden soll
+        // Holt die ID der Variable "Zeitraum", basierend auf ihrem Identifikator
         $idzeitraum = $this->GetIDForIdent("Zeitraum");
+    
+        // Überprüft, ob die Variable existiert, bevor versucht wird, sie zu aktualisieren
         if (!IPS_VariableExists($idzeitraum)) {
-            $this->SendDebug('Error in RequestAction', 'Variable to be updated does not exist', 0);
-            return;
+            // Sendet eine Debug-Nachricht, wenn die Variable nicht existiert
+            $this->SendDebug('Error in RequestAction', 'Variable "Zeitraum" does not exist', 0);
+            return; // Beendet die Funktion, um weitere Ausführung zu verhindern
         }
+    
+        // Aktualisiert den Wert der Variable "Zeitraum" mit dem neuen Wert
         SetValue($idzeitraum, $value);
+        
+        // Optional: Bestätigung oder weitere Aktion nach der Aktualisierung
+        $this->SendDebug('RequestAction Success', "Variable 'Zeitraum' updated to " . $value, 0);
     }
+    
 
 
     public function GetVisualizationTile()
