@@ -244,7 +244,8 @@
             color: var(--schriftfarbesub);
         }
 
-        .schaltertag {
+        .schalter {
+            flex: 1;                  /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -264,7 +265,7 @@
 
         }
 
-        .schaltertag {
+        .schalter {
             background-color: gray;
 
         }
@@ -275,7 +276,6 @@
 }
 
 .schalter {
-    flex: 1;                  /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
     margin: 5px;              /* Fügt einen kleinen Abstand zwischen den Buttons hinzu */
 }
 
