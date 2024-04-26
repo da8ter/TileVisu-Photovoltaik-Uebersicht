@@ -312,7 +312,9 @@
                 var root = document.documentElement;
                 // Abhängig vom Parameter werden allerdings verschiedene Werte angepasst
                 switch (parameter2) {
-
+                    case 'zeitraum':
+                        element.textContent = decodedData[parameter];
+                        break;
                     case 'produktion':
                         element.textContent = decodedData[parameter] + ' kWh';
                         break;
@@ -492,6 +494,7 @@
                 <p>Jahr</p>
             </button>
         </div>
+        <p id="zeit"></p>
         
     </div>
 
