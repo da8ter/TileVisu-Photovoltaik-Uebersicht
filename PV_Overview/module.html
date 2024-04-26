@@ -245,7 +245,7 @@
         }
 
         .schalter {
-            flex: 1;                  /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
+           /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -272,13 +272,22 @@
         }
 
         .buttondiv {
-    display: flex;            /* Aktiviert Flexbox */
-    justify-content: center;  /* Zentriert die Buttons horizontal */
+    display: flex;  /* Aktiviert Flexbox */
 }
 
 .schalter {
+    flex: 1;                  /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
     margin: 5px;              /* Fügt einen kleinen Abstand zwischen den Buttons hinzu */
 }
+
+.schalter:first-child {
+    margin-left: 0;          /* Entfernt den linken Abstand des ersten Buttons */
+}
+
+.schalter:last-child {
+    margin-right: 0;         /* Entfernt den rechten Abstand des letzten Buttons */
+}
+
 
 
 
@@ -470,16 +479,16 @@
             </div>
         </div>
         <div class="buttondiv" id="buttondiv">
-            <button id="schalterTag" class="schalter" onclick="requestAction('Schalter', 'tag');">
+            <button id="schalterTag" class="schalter" onclick="requestAction('Schalter', '1');">
                 <p>Tag</p>
             </button>
-            <button id="schalterWoche" class="schalter" onclick="requestAction('Schalter', 'woche');">
+            <button id="schalterWoche" class="schalter" onclick="requestAction('Schalter', '2');">
                 <p>Woche</p>
             </button>
-            <button id="schalterMonat" class="schalter" onclick="requestAction('Schalter', 'monat');">
+            <button id="schalterMonat" class="schalter" onclick="requestAction('Schalter', '3');">
                 <p>Monat</p>
             </button>
-            <button id="schalterJahr" class="schalter" onclick="requestAction('Schalter', 'jahr');">
+            <button id="schalterJahr" class="schalter" onclick="requestAction('Schalter', '4');">
                 <p>Jahr</p>
             </button>
         </div>
