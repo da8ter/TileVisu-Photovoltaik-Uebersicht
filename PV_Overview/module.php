@@ -282,9 +282,6 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             // Holt die ID der Variable "Zeitraum"
             $idzeitraum = $this->GetIDForIdent("Zeitraum");
 
-            // Aktualisiert den Wert für die Visualisierung mit dem aktuellen Wert der Variable "Zeitraum"
-            $this->UpdateVisualizationValue(json_encode(['zeitraum' => GetValueInteger($idzeitraum)]));
-
             // Speichert den aktuellen Wert der Variable "Zeitraum" im Ergebnisarray
             $result['zeitraum'] = GetValueInteger($idzeitraum);
 
