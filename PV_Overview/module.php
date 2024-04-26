@@ -228,10 +228,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $this->SendDebug('Error in RequestAction', 'Variable to be updated does not exist', 0);
             return;
         }
-            // Umschalten des Werts der Variable
-        $currentValue = GetValue($idzeitraum);
-        //SetValue($variableID, !$currentValue);
-        SetValueInteger($idzeitraum, $currentValue);
+        SetValue($idzeitraum, $value);
     }
 
 
