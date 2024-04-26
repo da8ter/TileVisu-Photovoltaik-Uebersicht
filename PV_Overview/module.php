@@ -262,7 +262,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['verbrauchlabel'] =  $this->ReadPropertyString('VerbrauchLabel');
             $result['eigenverbrauchlabel'] =  $this->ReadPropertyString('EigenverbrauchLabel');
             $result['eigenproduktionlabel'] =  $this->ReadPropertyString('EigenproduktionLabel');
-
+            $result['zeitraum'] =  $this->ReadAttributeInteger('Zeitraum');
             
             
             $archivID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
