@@ -35,7 +35,6 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyFloat("Eckenradius", 6);
         $this->RegisterPropertyInteger("EinspeisungFarbe", 2598689);
         $this->RegisterPropertyInteger("ZukaufFarbe", 9830400);
-        $this->RegisterPropertyInteger("Zeitraum", 1);
         $this->RegisterVariableInteger("Zeitraum", "Anzeige Zeitraum", "");
 
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
