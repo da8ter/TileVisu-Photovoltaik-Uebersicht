@@ -35,7 +35,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyFloat("Eckenradius", 6);
         $this->RegisterPropertyInteger("EinspeisungFarbe", 2598689);
         $this->RegisterPropertyInteger("ZukaufFarbe", 9830400);
-        $this->RegisterPropertyInteger("Zeitraum", 4);
+        $this->RegisterAttributeInteger("Zeitraum", 4);
 
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
         $this->SetVisualizationType(1);
@@ -76,9 +76,10 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         }
 
 
-        foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert', 'Zeitraum'] as $VariableProperty)        {
+        foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert'] as $VariableProperty)        {
             $this->RegisterMessage($this->ReadPropertyInteger($VariableProperty), VM_UPDATE);
         }
+        $this->RegisterMessage($this->ReadAttributeInteger('Zeitraum'), VM_UPDATE);
 
         // Schicke eine komplette Update-Nachricht an die Darstellung, da sich ja Parameter geändert haben können
         $this->UpdateVisualizationValue($this->GetFullUpdateMessage());
@@ -216,13 +217,14 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
                 }
             }
+            $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadAttributeInteger('Zeitraum')]));
         }
     }
 
 
     public function RequestAction($Ident, $Value) {
-        //SetValue('Zeitraum', $Value);
-        SetValue($Ident, $Value);
+        $this->WriteAttributeInteger($Ident, $Value);
+        //SetValue($Ident, $Value);
         $this->GetFullUpdateMessage();
     }
     
