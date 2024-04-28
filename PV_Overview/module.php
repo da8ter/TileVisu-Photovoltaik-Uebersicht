@@ -209,9 +209,9 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion_speicher_prozent' => $eigenproduktion_speicher_prozent]));
                         $this->UpdateVisualizationValue(json_encode(['eigenverbrauch' => $eigenverbrauch]));
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion' => $eigenproduktion]));
-
-                        $idzeitraum = $this->GetIDForIdent("Zeitraum");
-                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => GetValueInteger($idzeitraum)]));
+                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadPropertyInteger('Zeitraum')]));
+                       
+                        
                         break; // Beende die Schleife, da der passende Wert gefunden wurdea
 
                 }
@@ -265,12 +265,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['verbrauchlabel'] =  $this->ReadPropertyString('VerbrauchLabel');
             $result['eigenverbrauchlabel'] =  $this->ReadPropertyString('EigenverbrauchLabel');
             $result['eigenproduktionlabel'] =  $this->ReadPropertyString('EigenproduktionLabel');
-            
-            // Holt die ID der Variable "Zeitraum"
-            $idzeitraum = $this->GetIDForIdent("Zeitraum");
-
-            // Speichert den aktuellen Wert der Variable "Zeitraum" im Ergebnisarray
-            $result['zeitraum'] = GetValueInteger($idzeitraum);
+            $result['zeitraum'] =  $this->ReadPropertyInteger('Zeitraum');
+           
 
 
             
