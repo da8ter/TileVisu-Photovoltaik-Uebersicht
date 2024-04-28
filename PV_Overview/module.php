@@ -212,7 +212,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
                         $idzeitraum = $this->GetIDForIdent("Zeitraum");
                         $this->UpdateVisualizationValue(json_encode(['zeitraum' => GetValueInteger($idzeitraum)]));
-                        break; // Beende die Schleife, da der passende Wert gefunden wurde
+                        break; // Beende die Schleife, da der passende Wert gefunden wurdea
 
                 }
             }
