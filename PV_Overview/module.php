@@ -294,8 +294,22 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $SpeicherEntladungID = $this->ReadPropertyInteger('SpeicherEntladungWert');
             $entladungSpeicher = 0; // Standardwert setzen 
 
+            $startzeit = $this->ReadAttributeInteger('Zeitraum');
+            if ($startzeit == 1) {
+                $zeit = 'today 00:00';
+             }
+             elseif ($startzeit ==2) {
+                $zeit = 'o-\\WW';
+             }
+             elseif ($startzeit ==3) {
+                $zeit = 'first day of this month 00:00';
+             }
+             elseif ($startzeit ==4) {
+                $zeit = 'first day of January this year 00:00';
+             }
+
             if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
-                $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, 1 /* Täglich */, strtotime($zeit), time(), 0);
                 if (!empty($SpeicherEntladung_heute_archiv)) {
                     $entladungSpeicher = round($SpeicherEntladung_heute_archiv[0]['Avg'], 2);
                 }
@@ -304,7 +318,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $beladungSpeicher = 0; // Standardwert setzen 
 
             if (IPS_VariableExists($SpeicherBeladungID) && AC_GetLoggingStatus($archivID, $SpeicherBeladungID)) {
-                $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, 1 /* Täglich */, strtotime($zeit), time(), 0);
                 if (!empty($SpeicherBeladung_heute_archiv)) {
                     $beladungSpeicher = round($SpeicherBeladung_heute_archiv[0]['Avg'], 2);
                 }
@@ -314,7 +328,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $produktion = 0; // Standardwert setzen
             
             if (IPS_VariableExists($produktionsID) && AC_GetLoggingStatus($archivID, $produktionsID)) {
-                $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, 1 /* Täglich */, strtotime($zeit), time(), 0);
                 if (!empty($produktion_heute_archiv)) {
                     $produktion = round($produktion_heute_archiv[0]['Avg'], 2);
                 }
@@ -324,7 +338,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $import = 0; // Standardwert setzen
             
             if (IPS_VariableExists($importID) && AC_GetLoggingStatus($archivID, $importID)) {
-                $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, 1 /* Täglich */, strtotime($zeit), time(), 0);
                 if (!empty($import_heute_archiv)) {
                     $import = round($import_heute_archiv[0]['Avg'], 2);
                 }
@@ -333,7 +347,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $verbrauch = 0; // Standardwert setzen
             
             if (IPS_VariableExists($verbrauchID) && AC_GetLoggingStatus($archivID, $verbrauchID)) {
-                $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, 1 /* Täglich */, strtotime($zeit), time(), 0);
                 if (!empty($verbrauch_heute_archiv)) {
                     $verbrauch = round($verbrauch_heute_archiv[0]['Avg'], 2);
                 }
@@ -346,7 +360,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $export = 0; // Standardwert setzen
             
             if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
-                $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1 /* Täglich */, strtotime($zeit), time(), 0);
                 if (!empty($export_heute_archiv)) {
                     $export = round($export_heute_archiv[0]['Avg'], 2);
                 }
