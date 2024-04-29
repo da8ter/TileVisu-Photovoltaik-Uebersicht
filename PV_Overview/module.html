@@ -244,11 +244,7 @@
             color: var(--schriftfarbesub);
         }
 
-        .schalterTag,
-        .schalterWoche,
-        .schalterMonat,
-        .schalterJahr {
-           /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
+        button {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -269,18 +265,13 @@
 
         }
 
-        .schalterTag {
+        .schalterOn {
             background-color: var(--buttonfarbe1);
         }
-        .schalterWoche {
-            background-color: var(--buttonfarbe1);
+        .schalteroff {
+            background-color: var(--buttonfarbe2);
         }
-        .schalterMonat {
-            background-color: var(--buttonfarbe1);
-        }
-        .schalterJahr {
-            background-color: var(--buttonfarbe1);
-        }
+
 
         .buttondiv {
     display: flex;  /* Aktiviert Flexbox */
@@ -327,18 +318,55 @@
                         element.textContent = decodedData[parameter];
 
                         if (zeitraum === 1) {
-                            var schalterTagStyle = document.querySelector('.schalterTag').style;
-                            schalterTagStyle.setProperty('--buttonFarbe2', 'var(--buttonfarbe1)');
-                            var schalterWocheStyle = document.querySelector('.schalterWoche').style;
-                            schalterWocheStyle.setProperty('--buttonFarbe1', 'var(--buttonfarbe2)');
-                            var schalterMonatStyle = document.querySelector('.schalterMonat').style;
-                            schalterMonatStyle.setProperty('--buttonFarbe1', 'var(--buttonfarbe2)');
-                            var schalterJahrtStyle = document.querySelector('.schalterJahr').style;
-                            schalterJahrStyle.setProperty('--buttonFarbe1', 'var(--buttonfarbe2)');
-
+                            schalterTag.classList.remove();
+                            schalterTag.classList.add('schalterOn');
+                            schalterWoche.classList.remove();
+                            schalterWoche.classList.add('schalterOff');
+                            schalterMonat.classList.remove();
+                            schalterMonat.classList.add('schalterOff');
+                            schalterJahr.classList.remove();
+                            schalterJahr.classList.add('schalterOff');
                         }
-                        
-
+                        elseif (zeitraum === 2) {
+                            schalterTag.classList.remove();
+                            schalterTag.classList.add('schalterOff');
+                            schalterWoche.classList.remove();
+                            schalterWoche.classList.add('schalterOn');
+                            schalterMonat.classList.remove();
+                            schalterMonat.classList.add('schalterOff');
+                            schalterJahr.classList.remove();
+                            schalterJahr.classList.add('schalterOff');
+                        }
+                        elseif (zeitraum === 3) {
+                            schalterTag.classList.remove();
+                            schalterTag.classList.add('schalterOff');
+                            schalterWoche.classList.remove();
+                            schalterWoche.classList.add('schalterOff');
+                            schalterMonat.classList.remove();
+                            schalterMonat.classList.add('schalterOn');
+                            schalterJahr.classList.remove();
+                            schalterJahr.classList.add('schalterOff');
+                        }
+                        elseif (zeitraum === 4) {
+                            schalterTag.classList.remove();
+                            schalterTag.classList.add('schalterOff');
+                            schalterWoche.classList.remove();
+                            schalterWoche.classList.add('schalterOff');
+                            schalterMonat.classList.remove();
+                            schalterMonat.classList.add('schalterOff');
+                            schalterJahr.classList.remove();
+                            schalterJahr.classList.add('schalterOn');
+                        }
+                        else {
+                            schalterTag.classList.remove();
+                            schalterTag.classList.add('schalterOff');
+                            schalterWoche.classList.remove();
+                            schalterWoche.classList.add('schalterOff');
+                            schalterMonat.classList.remove();
+                            schalterMonat.classList.add('schalterOff');
+                            schalterJahr.classList.remove();
+                            schalterJahr.classList.add('schalterOff');
+                        }                      
                         break;
                     case 'produktion':
                         element.textContent = decodedData[parameter] + ' kWh';
@@ -512,16 +540,16 @@
             </div>
         </div>
         <div class="buttondiv" id="buttondiv">
-            <button id="schalterTag" class="schalterTag" onclick="requestAction('Zeitraum', 1);">
+            <button id="schalterTag" class="schalterOff" onclick="requestAction('Zeitraum', 1);">
                 <p>Tag</p>
             </button>
-            <button id="schalterWoche" class="schalterWoche" onclick="requestAction('Zeitraum', 2);">
+            <button id="schalterWoche" class="schalterOff" onclick="requestAction('Zeitraum', 2);">
                 <p>Woche</p>
             </button>
-            <button id="schalterMonat" class="schalterMonat" onclick="requestAction('Zeitraum', 3);">
+            <button id="schalterMonat" class="schalterOff" onclick="requestAction('Zeitraum', 3);">
                 <p>Monat</p>
             </button>
-            <button id="schalterJahr" class="schalterJahr" onclick="requestAction('Zeitraum', 4);">
+            <button id="schalterJahr" class="schalterOff" onclick="requestAction('Zeitraum', 4);">
                 <p>Jahr</p>
             </button>
         </div>
