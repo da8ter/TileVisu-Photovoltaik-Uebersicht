@@ -158,6 +158,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                             }
                         }
             
+
                         $importID = $this->ReadPropertyInteger('ImportWert');
                         $import = 0; // Standardwert setzen
                         
@@ -167,6 +168,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                                 $import = round($import_heute_archiv[0]['Avg'], 2);
                             }
                         }
+
                         $verbrauchID = $this->ReadPropertyInteger('VerbrauchWert');
                         $verbrauch = 0; // Standardwert setzen
                         
@@ -182,7 +184,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $export = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
-                            $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1, $zeit, time(), 0);
+                            $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, $aggregation, $zeit, time(), 0);
                             if (!empty($export_heute_archiv)) {
                                 $export = round($export_heute_archiv[0]['Avg'], 2);
                             }
