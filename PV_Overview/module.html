@@ -342,13 +342,13 @@
                         }
 
                         // Reagieren auf den Wert von 'zeitraum'
-                        if (zeitraum === 1) {
+                        if (decodedData[parameter] === 1) {
                             updateSchalter(schalterTag);
-                        } else if (zeitraum === 2) {
+                        } else if (decodedData[parameter] === 2) {
                             updateSchalter(schalterWoche);
-                        } else if (zeitraum === 3) {
+                        } else if (decodedData[parameter] === 3) {
                             updateSchalter(schalterMonat);
-                        } else if (zeitraum === 4) {
+                        } else if (decodedData[parameter] === 4) {
                             updateSchalter(schalterJahr);
                         } else {
                             // Wenn 'zeitraum' nicht 1-4 ist, setze alle auf "off"
