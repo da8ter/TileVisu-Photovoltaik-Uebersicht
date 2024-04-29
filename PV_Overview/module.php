@@ -109,19 +109,20 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $entladungSpeicher = 0; // Standardwert setzen 
             
                         $startzeit = $this->ReadAttributeInteger('Zeitraum');
+
                         if ($startzeit == 1) {
                             $zeit = strtotime("today 00:00");
                             $aggregation = 1;
                          }
-                         elseif ($startzeit ==2) {
+                         elseif ($startzeit == 2) {
                             $zeit = strtotime("Monday this week 00:00");
                             $aggregation = 2;
                          }
-                         elseif ($startzeit ==3) {
+                         elseif ($startzeit == 3) {
                             $zeit = strtotime("first day of this month 00:00");
                             $aggregation = 3;
                          }
-                         elseif ($startzeit ==4) {
+                         elseif ($startzeit == 4) {
                             $zeit = strtotime("first day of January this year 00:00");
                             $aggregation = 4;
                          }
@@ -307,15 +308,15 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 $zeit = strtotime("today 00:00");
                 $aggregation = 1;
              }
-             elseif ($startzeit ==2) {
+             elseif ($startzeit == 2) {
                 $zeit = strtotime("Monday this week 00:00");
                 $aggregation = 2;
              }
-             elseif ($startzeit ==3) {
+             elseif ($startzeit == 3) {
                 $zeit = strtotime("first day of this month 00:00");
                 $aggregation = 3;
              }
-             elseif ($startzeit ==4) {
+             elseif ($startzeit == 4) {
                 $zeit = strtotime("first day of January this year 00:00");
                 $aggregation = 4;
              }
