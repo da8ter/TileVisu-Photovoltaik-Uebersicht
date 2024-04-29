@@ -247,8 +247,7 @@
         #schalterTag,
         #schalterWoche,
         #schalterMonat,
-        #schalterJahr
-         {
+        #schalterJahr {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -272,31 +271,33 @@
         .schalterOn {
             background-color: var(--buttonfarbe1);
         }
+
         .schalteroff {
             background-color: var(--buttonfarbe2);
         }
 
 
         .buttondiv {
-    display: flex;  /* Aktiviert Flexbox */
-}
+            display: flex;
+            /* Aktiviert Flexbox */
+        }
 
-.schalter {
-    flex: 1;                  /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
-    margin: 5px;              /* Fügt einen kleinen Abstand zwischen den Buttons hinzu */
-}
+        .schalter {
+            flex: 1;
+            /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
+            margin: 5px;
+            /* Fügt einen kleinen Abstand zwischen den Buttons hinzu */
+        }
 
-.schalter:first-child {
-    margin-left: 0;          /* Entfernt den linken Abstand des ersten Buttons */
-}
+        .schalter:first-child {
+            margin-left: 0;
+            /* Entfernt den linken Abstand des ersten Buttons */
+        }
 
-.schalter:last-child {
-    margin-right: 0;         /* Entfernt den rechten Abstand des letzten Buttons */
-}
-
-
-
-
+        .schalter:last-child {
+            margin-right: 0;
+            /* Entfernt den rechten Abstand des letzten Buttons */
+        }
     </style>
 
 
@@ -321,56 +322,42 @@
                     case 'zeitraum':
                         element.textContent = decodedData[parameter];
 
+                        // Definiere die Schalterelemente
+                        const schalterTag = document.getElementById('schalterTag');
+                        const schalterWoche = document.getElementById('schalterWoche');
+                        const schalterMonat = document.getElementById('schalterMonat');
+                        const schalterJahr = document.getElementById('schalterJahr');
+
+                        // Setzt alle Schalter auf "off" außer den ausgewählten, der auf "on" gesetzt wird
+                        function updateSchalter(selectedSchalter) {
+                            const alleSchalter = [schalterTag, schalterWoche, schalterMonat, schalterJahr];
+
+                            alleSchalter.forEach(schalter => {
+                                schalter.classList.remove('schalterOn');
+                                schalter.classList.add('schalterOff');
+                            });
+
+                            selectedSchalter.classList.remove('schalterOff');
+                            selectedSchalter.classList.add('schalterOn');
+                        }
+
+                        // Reagieren auf den Wert von 'zeitraum'
                         if (zeitraum === 1) {
-                            schalterTag.classList.remove();
-                            schalterTag.classList.add('schalterOn');
-                            schalterWoche.classList.remove();
-                            schalterWoche.classList.add('schalterOff');
-                            schalterMonat.classList.remove();
-                            schalterMonat.classList.add('schalterOff');
-                            schalterJahr.classList.remove();
-                            schalterJahr.classList.add('schalterOff');
+                            updateSchalter(schalterTag);
+                        } else if (zeitraum === 2) {
+                            updateSchalter(schalterWoche);
+                        } else if (zeitraum === 3) {
+                            updateSchalter(schalterMonat);
+                        } else if (zeitraum === 4) {
+                            updateSchalter(schalterJahr);
+                        } else {
+                            // Wenn 'zeitraum' nicht 1-4 ist, setze alle auf "off"
+                            [schalterTag, schalterWoche, schalterMonat, schalterJahr].forEach(schalter => {
+                                schalter.classList.remove('schalterOn');
+                                schalter.classList.add('schalterOff');
+                            });
                         }
-                        elseif (zeitraum === 2) {
-                            schalterTag.classList.remove();
-                            schalterTag.classList.add('schalterOff');
-                            schalterWoche.classList.remove();
-                            schalterWoche.classList.add('schalterOn');
-                            schalterMonat.classList.remove();
-                            schalterMonat.classList.add('schalterOff');
-                            schalterJahr.classList.remove();
-                            schalterJahr.classList.add('schalterOff');
-                        }
-                        elseif (zeitraum === 3) {
-                            schalterTag.classList.remove();
-                            schalterTag.classList.add('schalterOff');
-                            schalterWoche.classList.remove();
-                            schalterWoche.classList.add('schalterOff');
-                            schalterMonat.classList.remove();
-                            schalterMonat.classList.add('schalterOn');
-                            schalterJahr.classList.remove();
-                            schalterJahr.classList.add('schalterOff');
-                        }
-                        elseif (zeitraum === 4) {
-                            schalterTag.classList.remove();
-                            schalterTag.classList.add('schalterOff');
-                            schalterWoche.classList.remove();
-                            schalterWoche.classList.add('schalterOff');
-                            schalterMonat.classList.remove();
-                            schalterMonat.classList.add('schalterOff');
-                            schalterJahr.classList.remove();
-                            schalterJahr.classList.add('schalterOn');
-                        }
-                        else {
-                            schalterTag.classList.remove();
-                            schalterTag.classList.add('schalterOff');
-                            schalterWoche.classList.remove();
-                            schalterWoche.classList.add('schalterOff');
-                            schalterMonat.classList.remove();
-                            schalterMonat.classList.add('schalterOff');
-                            schalterJahr.classList.remove();
-                            schalterJahr.classList.add('schalterOff');
-                        }                      
+
                         break;
                     case 'produktion':
                         element.textContent = decodedData[parameter] + ' kWh';
@@ -430,7 +417,7 @@
                         break;
                     case 'buttonfarbe2':
                         root.style.setProperty('--buttonfarbe2', decodedData[parameter]);
-                        break;    
+                        break;
                     case 'bildtransparenz':
                         root.style.setProperty('--bildtransparenz', decodedData[parameter]);
                         break;
@@ -558,7 +545,7 @@
             </button>
         </div>
         <p id="zeitraum"></p>
-        
+
     </div>
 
 </body>
