@@ -23,6 +23,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyInteger("EigenverbrauchVerlaufFarbe2", 2132596);
         $this->RegisterPropertyInteger("EigenproduktionVerlaufFarbe1", 2674091);
         $this->RegisterPropertyInteger("EigenproduktionVerlaufFarbe2", 2132596);
+        $this->RegisterPropertyInteger("ButtonFarbe1", 2674091);
+        $this->RegisterPropertyInteger("ButtonFarbe2", 2132596);
         //Kachellayout
         $this->RegisterPropertyInteger("bgImage", 0);
         $this->RegisterPropertyFloat("Bildtransparenz", 0.7);
@@ -278,6 +280,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['eigenverbrauchverlauffarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenverbrauchVerlaufFarbe2'));
             $result['eigenproduktionverlauffarbe1'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenproduktionVerlaufFarbe1'));
             $result['eigenproduktionverlauffarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenproduktionVerlaufFarbe2'));
+            $result['buttonfarbe1'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ButtonFarbe1'));
+            $result['buttonfarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ButtonFarbe2'));
             $result['bildtransparenz'] =  $this->ReadPropertyFloat('Bildtransparenz');
             $result['kachelhintergrundfarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('Kachelhintergrundfarbe'));
             $result['schriftfarbebalken'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('SchriftfarbeBalken'));

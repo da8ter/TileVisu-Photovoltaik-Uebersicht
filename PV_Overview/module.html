@@ -244,7 +244,10 @@
             color: var(--schriftfarbesub);
         }
 
-        .schalter {
+        .schalterTag,
+        .schalterWoche,
+        .schalterMonate,
+        .schalterJahr {
            /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
             display: flex;
             flex-direction: row;
@@ -266,9 +269,17 @@
 
         }
 
-        .schalter {
-            background-color: gray;
-
+        .schalterTag {
+            background-color: var(--buttonfarbe1);
+        }
+        .schalterWoche {
+            background-color: var(--buttonfarbe1);
+        }
+        .schalterMonat {
+            background-color: var(--buttonfarbe1);
+        }
+        .schalterJahr {
+            background-color: var(--buttonfarbe1);
         }
 
         .buttondiv {
@@ -314,6 +325,20 @@
                 switch (parameter2) {
                     case 'zeitraum':
                         element.textContent = decodedData[parameter];
+
+                        if (zeitraum === 1) {
+                            var schalterTagStyle = document.querySelector('.schalterTag').style;
+                            schalterTagStyle.setProperty('--buttonFarbe2', 'var(--buttonfarbe1)');
+                            var schalterWocheStyle = document.querySelector('.schalterWoche').style;
+                            schalterWocheStyle.setProperty('--buttonFarbe1', 'var(--buttonfarbe2)');
+                            var schalterMonatStyle = document.querySelector('.schalterMonat').style;
+                            schalterMonatStyle.setProperty('--buttonFarbe1', 'var(--buttonfarbe2)');
+                            var schalterJahrtStyle = document.querySelector('.schalterJahr').style;
+                            schalterJahrStyle.setProperty('--buttonFarbe1', 'var(--buttonfarbe2)');
+
+                        }
+                        
+
                         break;
                     case 'produktion':
                         element.textContent = decodedData[parameter] + ' kWh';
@@ -368,6 +393,12 @@
                     case 'eigenproduktionverlauffarbe2':
                         root.style.setProperty('--eigenverbrauchverlauffarbe2', decodedData[parameter]);
                         break;
+                    case 'buttonfarbe1':
+                        root.style.setProperty('--buttonfarbe1', decodedData[parameter]);
+                        break;
+                    case 'buttonfarbe2':
+                        root.style.setProperty('--buttonfarbe2', decodedData[parameter]);
+                        break;    
                     case 'bildtransparenz':
                         root.style.setProperty('--bildtransparenz', decodedData[parameter]);
                         break;
@@ -481,16 +512,16 @@
             </div>
         </div>
         <div class="buttondiv" id="buttondiv">
-            <button id="schalterTag" class="schalter" onclick="requestAction('Zeitraum', 1);">
+            <button id="schalterTag" class="schalterTag" style="background-color: gray;" onclick="requestAction('Zeitraum', 1);">
                 <p>Tag</p>
             </button>
-            <button id="schalterWoche" class="schalter" onclick="requestAction('Zeitraum', 2);">
+            <button id="schalterWoche" class="schalterWoche" style="background-color: gray;" onclick="requestAction('Zeitraum', 2);">
                 <p>Woche</p>
             </button>
-            <button id="schalterMonat" class="schalter" onclick="requestAction('Zeitraum', 3);">
+            <button id="schalterMonat" class="schalterMonat" style="background-color: gray;" onclick="requestAction('Zeitraum', 3);">
                 <p>Monat</p>
             </button>
-            <button id="schalterJahr" class="schalter" onclick="requestAction('Zeitraum', 4);">
+            <button id="schalterJahr" class="schalterJahr" style="background-color: gray;" onclick="requestAction('Zeitraum', 4);">
                 <p>Jahr</p>
             </button>
         </div>

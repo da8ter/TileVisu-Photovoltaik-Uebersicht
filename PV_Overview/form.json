@@ -215,6 +215,18 @@
               "allowTransparent": "false",
               "name": "EigenproduktionVerlaufFarbe2",
               "caption": "Self-production bar color 2"
+            },
+            {
+              "type": "SelectColor",
+              "allowTransparent": "false",
+              "name": "ButtonFarbe1",
+              "caption": "Button active"
+            },
+            {
+              "type": "SelectColor",
+              "allowTransparent": "false",
+              "name": "ButtonFarbe2",
+              "caption": "Button inactive"
             }
           ]
         },
