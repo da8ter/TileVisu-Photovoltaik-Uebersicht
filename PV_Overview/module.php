@@ -110,7 +110,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             
                         $startzeit = $this->ReadAttributeInteger('Zeitraum');
                         if ($startzeit == 1) {
-                            $zeit = 'today 00:00';
+                            $zeit = strtotime("today 00:00");
                             $aggregation = 1;
                          }
                          elseif ($startzeit ==2) {
@@ -300,7 +300,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
             $startzeit = $this->ReadAttributeInteger('Zeitraum');
             if ($startzeit == 1) {
-                $zeit = 'today 00:00';
+                $zeit = strtotime("today 00:00");
                 $aggregation = 1;
              }
              elseif ($startzeit ==2) {
