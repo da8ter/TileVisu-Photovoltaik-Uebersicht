@@ -24,7 +24,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyInteger("EigenproduktionVerlaufFarbe1", 2674091);
         $this->RegisterPropertyInteger("EigenproduktionVerlaufFarbe2", 2132596);
         $this->RegisterPropertyInteger("ButtonFarbe1", 2674091);
-        $this->RegisterPropertyInteger("ButtonFarbe2", 2132596);
+        $this->RegisterPropertyInteger("ButtonFarbe2", 6579300);
         //Kachellayout
         $this->RegisterPropertyInteger("bgImage", 0);
         $this->RegisterPropertyFloat("Bildtransparenz", 0.7);
