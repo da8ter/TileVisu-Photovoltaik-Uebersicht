@@ -315,6 +315,10 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 $zeit = strtotime("first day of January this year 00:00");
                 $aggregation = 4;
              }
+             else  {
+                $zeit = 'today 00:00';
+                $aggregation = 1;
+             }
 
             if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
                 $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, $aggregation, $zeit, time(), 0);
