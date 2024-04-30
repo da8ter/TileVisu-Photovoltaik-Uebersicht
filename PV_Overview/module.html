@@ -327,10 +327,11 @@
                         const schalterWoche = document.getElementById('schalterWoche');
                         const schalterMonat = document.getElementById('schalterMonat');
                         const schalterJahr = document.getElementById('schalterJahr');
+                        const schalterIndividuell = document.getElementById('schalterIndividuell');
 
                         // Setzt alle Schalter auf "off" außer den ausgewählten, der auf "on" gesetzt wird
                         function updateSchalter(selectedSchalter) {
-                            const alleSchalter = [schalterTag, schalterWoche, schalterMonat, schalterJahr];
+                            const alleSchalter = [schalterTag, schalterWoche, schalterMonat, schalterJahr, schalterIndividuell];
 
                             alleSchalter.forEach(schalter => {
                                 schalter.classList.remove('schalterOn');
@@ -350,7 +351,9 @@
                             updateSchalter(schalterMonat);
                         } else if (decodedData[parameter] === 4) {
                             updateSchalter(schalterJahr);
-                        } else {
+                        } else if (decodedData[parameter] === 5) {
+                            updateSchalter(schalterIndividuell);
+                        }else {
                             // Wenn 'zeitraum' nicht 1-4 ist, setze alle auf "off"
                             [schalterTag, schalterWoche, schalterMonat, schalterJahr].forEach(schalter => {
                                 schalter.classList.remove('schalterOn');
