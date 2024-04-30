@@ -254,8 +254,24 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
 
     public function RequestAction($Ident, $Value) {
-        $this->WriteAttributeInteger($Ident, $Value);
-        //SetValue($Ident, $Value);
+
+        switch($Ident) {
+            case "Zeitraum":
+                $this->WriteAttributeInteger($Ident, $Value);
+                break;
+            case "ZeitraumStart":
+                SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
+            case "ZeitraumEnde":
+                SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
+            default:
+        }
+
+
+
+
+
         $this->UpdateVisualizationValue($this->GetFullUpdateMessage());
     }
     
