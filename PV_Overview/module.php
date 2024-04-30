@@ -241,7 +241,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion_speicher_prozent' => $eigenproduktion_speicher_prozent]));
                         $this->UpdateVisualizationValue(json_encode(['eigenverbrauch' => $eigenverbrauch]));
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion' => $eigenproduktion]));
-                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadPropertyInteger('Zeitraum')]));
+                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadAttributeInteger('Zeitraum')]));
                        
                         
                         break; // Beende die Schleife, da der passende Wert gefunden wurdea
