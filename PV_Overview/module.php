@@ -38,9 +38,9 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyInteger("EinspeisungFarbe", 2598689);
         $this->RegisterPropertyInteger("ZukaufFarbe", 9830400);
         $this->RegisterAttributeInteger("Zeitraum", 1);
-        $this->RegisterVariableInteger("ZeitraumStart", "Zeitraum Start" , "UnixTimestamp");
+        $this->RegisterVariableInteger("ZeitraumStart", "Zeitraum Start" , "UnixTimestamp", 1);
         $this->EnableAction("ZeitraumStart");
-        $this->RegisterVariableInteger("ZeitraumEnde", "Zeitraum Ende" , "UnixTimestamp");
+        $this->RegisterVariableInteger("ZeitraumEnde", "Zeitraum Ende" , "UnixTimestamp", 2);
         $this->EnableAction("ZeitraumEnde");
         $this->RegisterPropertyBoolean("ButtonSwitch", 0);
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
@@ -77,7 +77,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         {
             foreach ($messageIDs as $messageID)
             {
-                $this->UnregisterMessage($senderID, $messageID);
+                $this->UnregisterMessage($senderID, $messageID);  //
             }
         }
 
