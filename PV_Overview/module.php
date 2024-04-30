@@ -148,7 +148,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                          }
                          elseif ($startzeit == 5) {
                             $zeit = $userStart;
-                            $aggregation = 4;
+                            $aggregation = 1;
                             $ende = $userEnde;
                          }
                          else  {
@@ -385,7 +385,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 }
                 elseif ($startzeit == 5) {
                 $zeit = $userStart;
-                $aggregation = 4;
+                $aggregation = 1;
                 $ende = $userEnde;
                 }
                 else  {
