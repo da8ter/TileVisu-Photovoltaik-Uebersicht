@@ -312,10 +312,10 @@
 
 /* Modal-Inhalt */
 .modal-content {
-    background-color: #fefefe;
+    background-color: #000000;
     margin: 15% auto; /* 15% from the top and centered */
     padding: 20px;
-    border: 1px solid #888;
+    border: 0px solid #888;
     width: 80%; /* Could be more or less, depending on screen size */
 }
 
@@ -586,7 +586,12 @@
         <div id="myModal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <p>Dies ist ein zentriertes Modal-Fenster!</p>
+                <form id="datetimeForm">
+                    <label for="datetime">Datum und Uhrzeit wählen:</label>
+                    <input type="datetime-local" id="datetime" name="datetime">
+                    <button type="button" onclick="convertToUnixTimestamp()">Convert to Unix Timestamp</button>
+                    <p>Unix Timestamp: <span id="timestamp"></span></p>
+                </form>
             </div>
         </div>
     
@@ -619,6 +624,17 @@
             modal.style.display = "none";
         }
     }
+
+    function convertToUnixTimestamp() {
+    var input = document.getElementById('datetime').value; // Wert aus dem Eingabefeld holen
+    if (input) {
+        var date = new Date(input); // Datum-Objekt erstellen
+        var timestamp = date.getTime() / 1000; // Millisekunden in Sekunden umrechnen für Unix Timestamp
+        document.getElementById('timestamp').textContent = timestamp; // Timestamp anzeigen
+    } else {
+        document.getElementById('timestamp').textContent = 'Bitte Datum und Zeit eingeben!';
+    }
+}
     </script>
 
 </html>
