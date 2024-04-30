@@ -360,7 +360,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (empty($userEnde)) {
                 $userEnde = time();
             }
-var_dump($userStart);
+
             
             $startzeit = $this->ReadAttributeInteger('Zeitraum');
 
