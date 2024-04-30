@@ -264,7 +264,7 @@
             {
               "type": "CheckBox",
               "name": "ButtonSwitch",
-              "caption": "Button für Zeitraum einblenden"
+              "caption": "Display Time Period Button"
             }
           ]
         }
