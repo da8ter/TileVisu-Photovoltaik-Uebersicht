@@ -257,6 +257,16 @@
               "suffix": "em"
             }
           ]
+        },
+        {
+          "type": "RowLayout",
+          "items": [
+            {
+              "type": "CheckBox",
+              "name": "ButtonSwitch",
+              "caption": "Button für Zeitraum einblenden"
+            }
+          ]
         }
       ]
     },
