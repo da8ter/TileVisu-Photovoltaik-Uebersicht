@@ -542,7 +542,12 @@
                 <p>Jahr</p>
             </button>
         </div>
-
+        <form id="datetimeForm">
+            <label for="datetime">Datum und Uhrzeit wählen:</label>
+            <input type="datetime-local" id="datetime" name="datetime">
+            <button type="button" onclick="convertToUnixTimestamp()">Convert to Unix Timestamp</button>
+            <p>Unix Timestamp: <span id="timestamp"></span></p>
+        </form>
     </div>
 
 </body>
