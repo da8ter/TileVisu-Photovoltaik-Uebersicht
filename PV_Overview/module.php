@@ -159,10 +159,21 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                          }
 
 
-                        if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
+                         if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
                             $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, $aggregation, $zeit, $ende, 0);
                             if (!empty($SpeicherEntladung_heute_archiv)) {
-                                $entladungSpeicher = round($SpeicherEntladung_heute_archiv[0]['Avg'], 2);
+                                foreach($SpeicherEntladung_heute_archiv as $Gesamt) {
+                                    $SpeicherEntladung_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($SpeicherEntladung_Avg)) 
+                                {
+                                $SpeicherEntladung_kWh = array_sum($SpeicherEntladung_Avg);
+                                }
+                                else {
+                                    $SpeicherEntladung_kWh = 0;
+                                }
+                                $entladungSpeicher = round($SpeicherEntladung_kWh, 2);
                             }
                         }
                         $SpeicherBeladungID = $this->ReadPropertyInteger('SpeicherBeladungWert');
@@ -171,7 +182,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         if (IPS_VariableExists($SpeicherBeladungID) && AC_GetLoggingStatus($archivID, $SpeicherBeladungID)) {
                             $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, $aggregation, $zeit, $ende, 0);
                             if (!empty($SpeicherBeladung_heute_archiv)) {
-                                $beladungSpeicher = round($SpeicherBeladung_heute_archiv[0]['Avg'], 2);
+                                foreach($SpeicherBeladung_heute_archiv as $Gesamt) {
+                                    $SpeicherBeladung_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($SpeicherBeladung_Avg)) 
+                                {
+                                $SpeicherBeladung_kWh = array_sum($SpeicherBeladung_Avg);
+                                }
+                                else {
+                                    $SpeicherBeladung_kWh = 0;
+                                }
+                                $beladungSpeicher = round($SpeicherBeladung_kWh, 2);
                             }
                         }
             
@@ -181,28 +203,61 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         if (IPS_VariableExists($produktionsID) && AC_GetLoggingStatus($archivID, $produktionsID)) {
                             $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, $aggregation, $zeit, $ende, 0);
                             if (!empty($produktion_heute_archiv)) {
-                                $produktion = round($produktion_heute_archiv[0]['Avg'], 2);
+                                foreach($produktion_heute_archiv as $Gesamt) {
+                                    $produktion_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($produktion_heute_Avg)) 
+                                {
+                                $produktion_heute_kWh = array_sum($produktion_heute_Avg);
+                                }
+                                else {
+                                    $produktion_heute_kWh = 0;
+                                }
+                                $produktion = round($produktion_heute_kWh, 2);
                             }
                         }
             
-
+            
                         $importID = $this->ReadPropertyInteger('ImportWert');
                         $import = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($importID) && AC_GetLoggingStatus($archivID, $importID)) {
                             $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, $aggregation, $zeit, $ende, 0);
                             if (!empty($import_heute_archiv)) {
-                                $import = round($import_heute_archiv[0]['Avg'], 2);
+                                foreach($import_heute_archiv as $Gesamt) {
+                                    $import_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($import_heute_Avg)) 
+                                {
+                                $import_heute_kWh = array_sum($import_heute_Avg);
+                                }
+                                else {
+                                    $import_heute_kWh = 0;
+                                }
+                                $import = round($import_heute_kWh, 2);
                             }
                         }
-
+            
                         $verbrauchID = $this->ReadPropertyInteger('VerbrauchWert');
                         $verbrauch = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($verbrauchID) && AC_GetLoggingStatus($archivID, $verbrauchID)) {
                             $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, $aggregation, $zeit, $ende, 0);
                             if (!empty($verbrauch_heute_archiv)) {
-                                $verbrauch = round($verbrauch_heute_archiv[0]['Avg'], 2);
+                                foreach($verbrauch_heute_archiv as $Gesamt) {
+                                    $verbrauch_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($verbrauch_heute_Avg)) 
+                                {
+                                $verbrauch_heute_kWh = array_sum($verbrauch_heute_Avg);
+                                }
+                                else {
+                                    $verbrauch_heute_kWh = 0;
+                                }
+                                $verbrauch= round($verbrauch_heute_kWh, 2);
                             }
                                                         
                         }
@@ -213,7 +268,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
                             $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, $aggregation, $zeit, $ende, 0);
                             if (!empty($export_heute_archiv)) {
-                                $export = round($export_heute_archiv[0]['Avg'], 2);
+                                foreach($export_heute_archiv as $Gesamt) {
+                                    $export_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($export_heute_Avg)) 
+                                {
+                                $export_heute_kWh = array_sum($export_heute_Avg);
+                                }
+                                else {
+                                    $export_heute_kWh = 0;
+                                }
+                                $export= round($export_heute_kWh, 2);
                             }
                         }
             
@@ -419,7 +485,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($SpeicherBeladungID) && AC_GetLoggingStatus($archivID, $SpeicherBeladungID)) {
                 $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, $aggregation, $zeit, $ende, 0);
                 if (!empty($SpeicherBeladung_heute_archiv)) {
-                    $beladungSpeicher = round($SpeicherBeladung_heute_archiv[0]['Avg'], 2);
+                    foreach($SpeicherBeladung_heute_archiv as $Gesamt) {
+                        $SpeicherBeladung_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($SpeicherBeladung_Avg)) 
+                    {
+                    $SpeicherBeladung_kWh = array_sum($SpeicherBeladung_Avg);
+                    }
+                    else {
+                        $SpeicherBeladung_kWh = 0;
+                    }
+                    $beladungSpeicher = round($SpeicherBeladung_kWh, 2);
                 }
             }
 
@@ -429,7 +506,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($produktionsID) && AC_GetLoggingStatus($archivID, $produktionsID)) {
                 $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, $aggregation, $zeit, $ende, 0);
                 if (!empty($produktion_heute_archiv)) {
-                    $produktion = round($produktion_heute_archiv[0]['Avg'], 2);
+                    foreach($produktion_heute_archiv as $Gesamt) {
+                        $produktion_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($produktion_heute_Avg)) 
+                    {
+                    $produktion_heute_kWh = array_sum($produktion_heute_Avg);
+                    }
+                    else {
+                        $produktion_heute_kWh = 0;
+                    }
+                    $produktion = round($produktion_heute_kWh, 2);
                 }
             }
 
@@ -440,7 +528,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($importID) && AC_GetLoggingStatus($archivID, $importID)) {
                 $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, $aggregation, $zeit, $ende, 0);
                 if (!empty($import_heute_archiv)) {
-                    $import = round($import_heute_archiv[0]['Avg'], 2);
+                    foreach($import_heute_archiv as $Gesamt) {
+                        $import_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($import_heute_Avg)) 
+                    {
+                    $import_heute_kWh = array_sum($import_heute_Avg);
+                    }
+                    else {
+                        $import_heute_kWh = 0;
+                    }
+                    $import = round($import_heute_kWh, 2);
                 }
             }
 
@@ -450,7 +549,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($verbrauchID) && AC_GetLoggingStatus($archivID, $verbrauchID)) {
                 $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, $aggregation, $zeit, $ende, 0);
                 if (!empty($verbrauch_heute_archiv)) {
-                    $verbrauch = round($verbrauch_heute_archiv[0]['Avg'], 2);
+                    foreach($verbrauch_heute_archiv as $Gesamt) {
+                        $verbrauch_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($verbrauch_heute_Avg)) 
+                    {
+                    $verbrauch_heute_kWh = array_sum($verbrauch_heute_Avg);
+                    }
+                    else {
+                        $verbrauch_heute_kWh = 0;
+                    }
+                    $verbrauch= round($verbrauch_heute_kWh, 2);
                 }
                                             
             }
@@ -461,7 +571,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
                 $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, $aggregation, $zeit, $ende, 0);
                 if (!empty($export_heute_archiv)) {
-                    $export = round($export_heute_archiv[0]['Avg'], 2);
+                    foreach($export_heute_archiv as $Gesamt) {
+                        $export_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($export_heute_Avg)) 
+                    {
+                    $export_heute_kWh = array_sum($export_heute_Avg);
+                    }
+                    else {
+                        $export_heute_kWh = 0;
+                    }
+                    $export= round($export_heute_kWh, 2);
                 }
             }
 
