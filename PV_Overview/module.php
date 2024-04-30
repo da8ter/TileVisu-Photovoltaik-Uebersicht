@@ -115,6 +115,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $userStart = $this->GetValue("ZeitraumStart");
                         $userEnde = $this->GetValue("ZeitraumEnde");
 
+
                         if (empty($userStart)) {
                             $userStart = strtotime("today 00:00");
                         }
@@ -359,7 +360,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (empty($userEnde)) {
                 $userEnde = time();
             }
-
+var_dump('$userStart');
             
             $startzeit = $this->ReadAttributeInteger('Zeitraum');
 
