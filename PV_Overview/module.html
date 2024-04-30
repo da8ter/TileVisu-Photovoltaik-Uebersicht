@@ -296,10 +296,80 @@
             margin-right: 0;
             /* Entfernt den rechten Abstand des letzten Buttons */
         }
+
+        /* Modal-Container */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal-Inhalt */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Der Close Button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
     </style>
 
 
     <script>
+
+
+// Das Modal erhalten
+var modal = document.getElementById("myModal");
+
+// Den Button erhalten, der das Modal öffnet
+var btn = document.getElementById("openModal");
+
+// Das <span> Element erhalten, das das Modal schließt
+var span = document.getElementsByClassName("close")[0];
+
+// Wenn der Benutzer den Button klickt, öffne das Modal 
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// Wenn der Benutzer auf <span> (x) klickt, schließe das Modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// Wenn der Benutzer irgendwo außerhalb des Modals klickt, schließe es
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+
+
+
+
         function handleMessage(data) {
             //console.log('Rohdaten empfangen:', data);
 
@@ -542,12 +612,14 @@
                 <p>Jahr</p>
             </button>
         </div>
-        <form id="datetimeForm">
-            <label for="datetime">Datum und Uhrzeit wählen:</label>
-            <input type="datetime-local" id="datetime" name="datetime">
-            <button type="button" onclick="convertToUnixTimestamp()">Convert to Unix Timestamp</button>
-            <p>Unix Timestamp: <span id="timestamp"></span></p>
-        </form>
+        <button id="openModal">Modal öffnen</button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Dies ist ein zentriertes Modal-Fenster!</p>
+            </div>
+        </div>
+    
     </div>
 
 </body>
