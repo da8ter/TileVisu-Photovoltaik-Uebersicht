@@ -83,6 +83,8 @@
             position: relative;
             padding-top: 0px;
             padding-bottom: 5px;
+            margin-bottom: 0.2em;
+
         }
 
         .einspeisungsubtext {
@@ -109,8 +111,8 @@
             width: 100%;
             display: flex;
             position: relative;
-            margin-bottom: 2%;
-            margin-top: 2%;
+            margin-bottom: 0.2em;
+            margin-top: 0.2em;
             box-sizing: border-box;
         }
 
@@ -243,10 +245,64 @@
             margin: 0;
             color: var(--schriftfarbesub);
         }
+
+        #schalterTag,
+        #schalterWoche,
+        #schalterMonat,
+        #schalterJahr,
+        #schalterIndividuell {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--eckenradius);
+            cursor: pointer;
+            border-width: 0px;
+            color: #ffffff;
+            font-size: var(--schriftgroessesub);
+            box-sizing: border-box;
+            white-space: nowrap;
+            height: calc(var(--schriftgroessesub) * 2);  /* Setze die Höhe basierend auf Schriftgröße */
+
+        }
+
+        .schalterOn {
+            background-color: var(--buttonfarbe1);
+        }
+
+        .schalteroff {
+            background-color: var(--buttonfarbe2);
+        }
+
+
+        .buttondiv {
+            display: flex;
+            /* Aktiviert Flexbox */
+        }
+
+        .schalter {
+            flex: 1;
+            /* Lässt jeden Button gleichmäßig den verfügbaren Platz einnehmen */
+            margin: 5px;
+            /* Fügt einen kleinen Abstand zwischen den Buttons hinzu */
+        }
+
+        .schalter1 {
+            margin-left: 0;
+            /* Entfernt den linken Abstand des ersten Buttons */
+        }
+
+        .schalter5 {
+            margin-right: 0;
+            /* Entfernt den rechten Abstand des letzten Buttons */
+        }
+
     </style>
 
 
     <script>
+
+
         function handleMessage(data) {
             //console.log('Rohdaten empfangen:', data);
 
@@ -256,7 +312,7 @@
             //console.log('Decodierte Daten:', decodedData);
 
             for (const parameter in decodedData) {
-                //console.log('Aktueller Parameter:', parameter, 'Wert:', decodedData[parameter]);
+                console.log('Aktueller Parameter:', parameter, 'Wert:', decodedData[parameter]);
 
                 const element = document.getElementById(parameter.toLowerCase());
                 const parameter2 = String(parameter).toLowerCase();
@@ -264,7 +320,49 @@
                 var root = document.documentElement;
                 // Abhängig vom Parameter werden allerdings verschiedene Werte angepasst
                 switch (parameter2) {
+                    case 'zeitraum':
+                        //element.textContent = decodedData[parameter];
 
+                        // Definiere die Schalterelemente
+                        const schalterTag = document.getElementById('schalterTag');
+                        const schalterWoche = document.getElementById('schalterWoche');
+                        const schalterMonat = document.getElementById('schalterMonat');
+                        const schalterJahr = document.getElementById('schalterJahr');
+                        const schalterIndividuell = document.getElementById('schalterIndividuell');
+
+                        // Setzt alle Schalter auf "off" außer den ausgewählten, der auf "on" gesetzt wird
+                        function updateSchalter(selectedSchalter) {
+                            const alleSchalter = [schalterTag, schalterWoche, schalterMonat, schalterJahr, schalterIndividuell];
+
+                            alleSchalter.forEach(schalter => {
+                                schalter.classList.remove('schalterOn');
+                                schalter.classList.add('schalterOff');
+                            });
+
+                            selectedSchalter.classList.remove('schalterOff');
+                            selectedSchalter.classList.add('schalterOn');
+                        }
+
+                        // Reagieren auf den Wert von 'zeitraum'
+                        if (decodedData[parameter] === 1) {
+                            updateSchalter(schalterTag);
+                        } else if (decodedData[parameter] === 2) {
+                            updateSchalter(schalterWoche);
+                        } else if (decodedData[parameter] === 3) {
+                            updateSchalter(schalterMonat);
+                        } else if (decodedData[parameter] === 4) {
+                            updateSchalter(schalterJahr);
+                        } else if (decodedData[parameter] === 5) {
+                            updateSchalter(schalterIndividuell);
+                        }else {
+                            // Wenn 'zeitraum' nicht 1-4 ist, setze alle auf "off"
+                            [schalterTag, schalterWoche, schalterMonat, schalterJahr].forEach(schalter => {
+                                schalter.classList.remove('schalterOn');
+                                schalter.classList.add('schalterOff');
+                            });
+                        }
+
+                        break;
                     case 'produktion':
                         element.textContent = decodedData[parameter] + ' kWh';
                         break;
@@ -318,6 +416,12 @@
                     case 'eigenproduktionverlauffarbe2':
                         root.style.setProperty('--eigenverbrauchverlauffarbe2', decodedData[parameter]);
                         break;
+                    case 'buttonfarbe1':
+                        root.style.setProperty('--buttonfarbe1', decodedData[parameter]);
+                        break;
+                    case 'buttonfarbe2':
+                        root.style.setProperty('--buttonfarbe2', decodedData[parameter]);
+                        break;
                     case 'bildtransparenz':
                         root.style.setProperty('--bildtransparenz', decodedData[parameter]);
                         break;
@@ -361,6 +465,13 @@
                         break;
                     case 'eckenradius':
                         root.style.setProperty('--eckenradius', decodedData[parameter] + 'px');
+                        break;
+                    case 'buttonswitch':
+                        if (decodedData[parameter] == 1) {
+                        buttondiv.classList.remove('hidden');
+                        buttondiv.classList.add('buttondiv');   
+                        }
+
                         break;
                     default:
                         if (element) {
@@ -430,8 +541,27 @@
                 <p class="import" id="import"></p>
             </div>
         </div>
+        <div class="hidden" id="buttondiv">
+            <button id="schalterTag" class="schalterOff schalter schalter1" onclick="requestAction('Zeitraum', 1);">
+                <p>Day</p>
+            </button>
+            <button id="schalterWoche" class="schalterOff schalter" onclick="requestAction('Zeitraum', 2);">
+                <p>Week</p>
+            </button>
+            <button id="schalterMonat" class="schalterOff schalter" onclick="requestAction('Zeitraum', 3);">
+                <p>Month</p>
+            </button>
+            <button id="schalterJahr" class="schalterOff schalter schalter4" onclick="requestAction('Zeitraum', 4);">
+                <p>Year</p>
+            </button>
+            <button id="schalterIndividuell" class="schalterOff schalter schalter5" onclick="requestAction('Zeitraum', 5);">
+                <p>individually</p>
+            </button>
+        </div>
+   
     </div>
 
 </body>
+
 
 </html>

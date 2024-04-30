@@ -23,6 +23,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyInteger("EigenverbrauchVerlaufFarbe2", 2132596);
         $this->RegisterPropertyInteger("EigenproduktionVerlaufFarbe1", 2674091);
         $this->RegisterPropertyInteger("EigenproduktionVerlaufFarbe2", 2132596);
+        $this->RegisterPropertyInteger("ButtonFarbe1", 2674091);
+        $this->RegisterPropertyInteger("ButtonFarbe2", 6579300);
         //Kachellayout
         $this->RegisterPropertyInteger("bgImage", 0);
         $this->RegisterPropertyFloat("Bildtransparenz", 0.7);
@@ -35,7 +37,12 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterPropertyFloat("Eckenradius", 6);
         $this->RegisterPropertyInteger("EinspeisungFarbe", 2598689);
         $this->RegisterPropertyInteger("ZukaufFarbe", 9830400);
-
+        $this->RegisterAttributeInteger("Zeitraum", 1);
+        $this->RegisterVariableInteger("ZeitraumStart", "Zeitraum Start" , "UnixTimestamp", 1);
+        $this->EnableAction("ZeitraumStart");
+        $this->RegisterVariableInteger("ZeitraumEnde", "Zeitraum Ende" , "UnixTimestamp", 2);
+        $this->EnableAction("ZeitraumEnde");
+        $this->RegisterPropertyBoolean("ButtonSwitch", 0);
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
         $this->SetVisualizationType(1);
     }
@@ -70,7 +77,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         {
             foreach ($messageIDs as $messageID)
             {
-                $this->UnregisterMessage($senderID, $messageID);
+                $this->UnregisterMessage($senderID, $messageID);  //
             }
         }
 
@@ -78,6 +85,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         foreach (['ProduktionWert', 'SpeicherEntladungWert', 'SpeicherBeladungWert', 'ExportWert', 'VerbrauchWert', 'ImportWert'] as $VariableProperty)        {
             $this->RegisterMessage($this->ReadPropertyInteger($VariableProperty), VM_UPDATE);
         }
+        $this->RegisterMessage($this->ReadAttributeInteger('Zeitraum'), VM_UPDATE);
 
         // Schicke eine komplette Update-Nachricht an die Darstellung, da sich ja Parameter geändert haben können
         $this->UpdateVisualizationValue($this->GetFullUpdateMessage());
@@ -105,20 +113,88 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
                         $SpeicherEntladungID = $this->ReadPropertyInteger('SpeicherEntladungWert');
                         $entladungSpeicher = 0; // Standardwert setzen 
-            
-                        if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
-                            $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                        $userStart = $this->GetValue("ZeitraumStart");
+                        $userEnde = $this->GetValue("ZeitraumEnde");
+
+
+                        if (empty($userStart)) {
+                            $userStart = strtotime("today 00:00");
+                        }
+                        
+                        if (empty($userEnde)) {
+                            $userEnde = time();
+                        }
+
+                        
+                        $startzeit = $this->ReadAttributeInteger('Zeitraum');
+
+                        if ($startzeit == 1) {
+                            $zeit = strtotime("today 00:00");
+                            $ende = time();
+                            $aggregation = 1;
+                         }
+                         elseif ($startzeit == 2) {
+                            $zeit = strtotime("Monday this week 00:00");
+                            $aggregation = 2;
+                            $ende = time();
+                         }
+                         elseif ($startzeit == 3) {
+                            $zeit = strtotime("first day of this month 00:00");
+                            $aggregation = 2;
+                            $ende = time();
+                         }
+                         elseif ($startzeit == 4) {
+                            $zeit = strtotime("first day of January this year 00:00");
+                            $aggregation = 2;
+                            $ende = time();
+                         }
+                         elseif ($startzeit == 5) {
+                            $zeit = $userStart;
+                            $aggregation = 1;
+                            $ende = $userEnde;
+                         }
+                         else  {
+                            $zeit = strtotime("today 00:00");
+                            $aggregation = 1;
+                            $ende = time();
+                         }
+
+
+                         if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
+                            $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, $aggregation, $zeit, $ende, 0);
                             if (!empty($SpeicherEntladung_heute_archiv)) {
-                                $entladungSpeicher = round($SpeicherEntladung_heute_archiv[0]['Avg'], 2);
+                                foreach($SpeicherEntladung_heute_archiv as $Gesamt) {
+                                    $SpeicherEntladung_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($SpeicherEntladung_Avg)) 
+                                {
+                                $SpeicherEntladung_kWh = array_sum($SpeicherEntladung_Avg);
+                                }
+                                else {
+                                    $SpeicherEntladung_kWh = 0;
+                                }
+                                $entladungSpeicher = round($SpeicherEntladung_kWh, 2);
                             }
                         }
                         $SpeicherBeladungID = $this->ReadPropertyInteger('SpeicherBeladungWert');
                         $beladungSpeicher = 0; // Standardwert setzen 
             
                         if (IPS_VariableExists($SpeicherBeladungID) && AC_GetLoggingStatus($archivID, $SpeicherBeladungID)) {
-                            $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                            $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, $aggregation, $zeit, $ende, 0);
                             if (!empty($SpeicherBeladung_heute_archiv)) {
-                                $beladungSpeicher = round($SpeicherBeladung_heute_archiv[0]['Avg'], 2);
+                                foreach($SpeicherBeladung_heute_archiv as $Gesamt) {
+                                    $SpeicherBeladung_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($SpeicherBeladung_Avg)) 
+                                {
+                                $SpeicherBeladung_kWh = array_sum($SpeicherBeladung_Avg);
+                                }
+                                else {
+                                    $SpeicherBeladung_kWh = 0;
+                                }
+                                $beladungSpeicher = round($SpeicherBeladung_kWh, 2);
                             }
                         }
             
@@ -126,28 +202,63 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $produktion = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($produktionsID) && AC_GetLoggingStatus($archivID, $produktionsID)) {
-                            $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                            $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, $aggregation, $zeit, $ende, 0);
                             if (!empty($produktion_heute_archiv)) {
-                                $produktion = round($produktion_heute_archiv[0]['Avg'], 2);
+                                foreach($produktion_heute_archiv as $Gesamt) {
+                                    $produktion_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($produktion_heute_Avg)) 
+                                {
+                                $produktion_heute_kWh = array_sum($produktion_heute_Avg);
+                                }
+                                else {
+                                    $produktion_heute_kWh = 0;
+                                }
+                                $produktion = round($produktion_heute_kWh, 2);
                             }
                         }
+            
             
                         $importID = $this->ReadPropertyInteger('ImportWert');
                         $import = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($importID) && AC_GetLoggingStatus($archivID, $importID)) {
-                            $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                            $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, $aggregation, $zeit, $ende, 0);
                             if (!empty($import_heute_archiv)) {
-                                $import = round($import_heute_archiv[0]['Avg'], 2);
+                                foreach($import_heute_archiv as $Gesamt) {
+                                    $import_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($import_heute_Avg)) 
+                                {
+                                $import_heute_kWh = array_sum($import_heute_Avg);
+                                }
+                                else {
+                                    $import_heute_kWh = 0;
+                                }
+                                $import = round($import_heute_kWh, 2);
                             }
                         }
+            
                         $verbrauchID = $this->ReadPropertyInteger('VerbrauchWert');
                         $verbrauch = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($verbrauchID) && AC_GetLoggingStatus($archivID, $verbrauchID)) {
-                            $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                            $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, $aggregation, $zeit, $ende, 0);
                             if (!empty($verbrauch_heute_archiv)) {
-                                $verbrauch = round($verbrauch_heute_archiv[0]['Avg'], 2);
+                                foreach($verbrauch_heute_archiv as $Gesamt) {
+                                    $verbrauch_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($verbrauch_heute_Avg)) 
+                                {
+                                $verbrauch_heute_kWh = array_sum($verbrauch_heute_Avg);
+                                }
+                                else {
+                                    $verbrauch_heute_kWh = 0;
+                                }
+                                $verbrauch= round($verbrauch_heute_kWh, 2);
                             }
                                                         
                         }
@@ -156,9 +267,20 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $export = 0; // Standardwert setzen
                         
                         if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
-                            $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                            $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, $aggregation, $zeit, $ende, 0);
                             if (!empty($export_heute_archiv)) {
-                                $export = round($export_heute_archiv[0]['Avg'], 2);
+                                foreach($export_heute_archiv as $Gesamt) {
+                                    $export_heute_Avg[] = $Gesamt['Avg'];
+                                }
+                                //Array auf Inhalt prüfen 
+                                if (!empty($export_heute_Avg)) 
+                                {
+                                $export_heute_kWh = array_sum($export_heute_Avg);
+                                }
+                                else {
+                                    $export_heute_kWh = 0;
+                                }
+                                $export= round($export_heute_kWh, 2);
                             }
                         }
             
@@ -208,26 +330,41 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion_speicher_prozent' => $eigenproduktion_speicher_prozent]));
                         $this->UpdateVisualizationValue(json_encode(['eigenverbrauch' => $eigenverbrauch]));
                         $this->UpdateVisualizationValue(json_encode(['eigenproduktion' => $eigenproduktion]));
-                        break; // Beende die Schleife, da der passende Wert gefunden wurde
+                        $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadAttributeInteger('Zeitraum')]));
+                       
+                        
+                        break; // Beende die Schleife, da der passende Wert gefunden wurdea
 
                 }
             }
+            $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadAttributeInteger('Zeitraum')]));
+            $this->UpdateVisualizationValue(json_encode(['buttonswitch' => $this->ReadPropertyBoolean('ButtonSwitch')]));
         }
     }
 
 
-    public function RequestAction($Ident, $value) {
-        // Nachrichten von der HTML-Darstellung schicken immer den Ident passend zur Eigenschaft und im Wert die Differenz, welche auf die Variable gerechnet werden soll
-        $variableID = $this->ReadPropertyInteger($Ident);
-        if (!IPS_VariableExists($variableID)) {
-            $this->SendDebug('Error in RequestAction', 'Variable to be updated does not exist', 0);
-            return;
+    public function RequestAction($Ident, $Value) {
+
+        switch($Ident) {
+            case "Zeitraum":
+                $this->WriteAttributeInteger($Ident, $Value);
+                break;
+            case "ZeitraumStart":
+                SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
+            case "ZeitraumEnde":
+                SetValue($this->GetIDForIdent($Ident), $Value);
+                break;
+            default:
         }
-            // Umschalten des Werts der Variable
-        $currentValue = GetValue($variableID);
-        //SetValue($variableID, !$currentValue);
-        RequestAction($variableID, !$currentValue);
+
+
+
+
+
+        $this->UpdateVisualizationValue($this->GetFullUpdateMessage());
     }
+    
 
 
     public function GetVisualizationTile()
@@ -252,23 +389,26 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['eigenverbrauchverlauffarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenverbrauchVerlaufFarbe2'));
             $result['eigenproduktionverlauffarbe1'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenproduktionVerlaufFarbe1'));
             $result['eigenproduktionverlauffarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenproduktionVerlaufFarbe2'));
-            $result['bildtransparenz'] =  $this->ReadPropertyFloat('Bildtransparenz');
+            $result['buttonfarbe1'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ButtonFarbe1'));
+            $result['buttonfarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ButtonFarbe2'));
+            $result['bildtransparenz'] = $this->ReadPropertyFloat('Bildtransparenz');
             $result['kachelhintergrundfarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('Kachelhintergrundfarbe'));
             $result['schriftfarbebalken'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('SchriftfarbeBalken'));
             $result['schriftfarbesub'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('SchriftfarbeSub'));
-            $result['schriftgroessebalken'] =  $this->ReadPropertyFloat('SchriftgroesseBalken');
-            $result['schriftgroessesub'] =  $this->ReadPropertyFloat('SchriftgroesseSub');
-            $result['eckenradius'] =  $this->ReadPropertyFloat('Eckenradius');
+            $result['schriftgroessebalken'] = $this->ReadPropertyFloat('SchriftgroesseBalken');
+            $result['schriftgroessesub'] = $this->ReadPropertyFloat('SchriftgroesseSub');
+            $result['eckenradius'] = $this->ReadPropertyFloat('Eckenradius');
             $result['einspeisungfarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EinspeisungFarbe'));
             $result['zukauffarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ZukaufFarbe'));
-            $result['produktionlabel'] =  $this->ReadPropertyString('ProduktionLabel');
-            $result['exportlabel'] =  $this->ReadPropertyString('ExportLabel');
-            $result['importlabel'] =  $this->ReadPropertyString('ImportLabel');
-            $result['verbrauchlabel'] =  $this->ReadPropertyString('VerbrauchLabel');
-            $result['eigenverbrauchlabel'] =  $this->ReadPropertyString('EigenverbrauchLabel');
-            $result['eigenproduktionlabel'] =  $this->ReadPropertyString('EigenproduktionLabel');
+            $result['produktionlabel'] = $this->ReadPropertyString('ProduktionLabel');
+            $result['exportlabel'] = $this->ReadPropertyString('ExportLabel');
+            $result['importlabel'] = $this->ReadPropertyString('ImportLabel');
+            $result['verbrauchlabel'] = $this->ReadPropertyString('VerbrauchLabel');
+            $result['eigenverbrauchlabel'] = $this->ReadPropertyString('EigenverbrauchLabel');
+            $result['eigenproduktionlabel'] = $this->ReadPropertyString('EigenproduktionLabel');
+            $result['zeitraum'] =  $this->ReadAttributeInteger('Zeitraum');
+            $result['buttonswitch'] = $this->ReadPropertyBoolean('ButtonSwitch');
 
-            
             
             $archivID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
 
@@ -277,19 +417,87 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $SpeicherEntladungID = $this->ReadPropertyInteger('SpeicherEntladungWert');
             $entladungSpeicher = 0; // Standardwert setzen 
 
+            $userStart = $this->GetValue("ZeitraumStart");
+            $userEnde = $this->GetValue("ZeitraumEnde");
+
+            if (empty($userStart)) {
+                $userStart = strtotime("today 00:00");
+            }
+            
+            if (empty($userEnde)) {
+                $userEnde = time();
+            }
+
+            
+            $startzeit = $this->ReadAttributeInteger('Zeitraum');
+
+            if ($startzeit == 1) {
+                $zeit = strtotime("today 00:00");
+                $ende = time();
+                $aggregation = 1;
+                }
+                elseif ($startzeit == 2) {
+                $zeit = strtotime("Monday this week 00:00");
+                $aggregation = 2;
+                $ende = time();
+                }
+                elseif ($startzeit == 3) {
+                $zeit = strtotime("first day of this month 00:00");
+                $aggregation = 2;
+                $ende = time();
+                }
+                elseif ($startzeit == 4) {
+                $zeit = strtotime("first day of January this year 00:00");
+                $aggregation = 2;
+                $ende = time();
+                }
+                elseif ($startzeit == 5) {
+                $zeit = $userStart;
+                $aggregation = 1;
+                $ende = $userEnde;
+                }
+                else  {
+                $zeit = strtotime("today 00:00");
+                $aggregation = 1;
+                $ende = time();
+                }
+
+
             if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
-                $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, $aggregation, $zeit, $ende, 0);
                 if (!empty($SpeicherEntladung_heute_archiv)) {
-                    $entladungSpeicher = round($SpeicherEntladung_heute_archiv[0]['Avg'], 2);
+                    foreach($SpeicherEntladung_heute_archiv as $Gesamt) {
+                        $SpeicherEntladung_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($SpeicherEntladung_Avg)) 
+                    {
+                    $SpeicherEntladung_kWh = array_sum($SpeicherEntladung_Avg);
+                    }
+                    else {
+                        $SpeicherEntladung_kWh = 0;
+                    }
+                    $entladungSpeicher = round($SpeicherEntladung_kWh, 2);
                 }
             }
             $SpeicherBeladungID = $this->ReadPropertyInteger('SpeicherBeladungWert');
             $beladungSpeicher = 0; // Standardwert setzen 
 
             if (IPS_VariableExists($SpeicherBeladungID) && AC_GetLoggingStatus($archivID, $SpeicherBeladungID)) {
-                $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, $aggregation, $zeit, $ende, 0);
                 if (!empty($SpeicherBeladung_heute_archiv)) {
-                    $beladungSpeicher = round($SpeicherBeladung_heute_archiv[0]['Avg'], 2);
+                    foreach($SpeicherBeladung_heute_archiv as $Gesamt) {
+                        $SpeicherBeladung_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($SpeicherBeladung_Avg)) 
+                    {
+                    $SpeicherBeladung_kWh = array_sum($SpeicherBeladung_Avg);
+                    }
+                    else {
+                        $SpeicherBeladung_kWh = 0;
+                    }
+                    $beladungSpeicher = round($SpeicherBeladung_kWh, 2);
                 }
             }
 
@@ -297,41 +505,85 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $produktion = 0; // Standardwert setzen
             
             if (IPS_VariableExists($produktionsID) && AC_GetLoggingStatus($archivID, $produktionsID)) {
-                $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, $aggregation, $zeit, $ende, 0);
                 if (!empty($produktion_heute_archiv)) {
-                    $produktion = round($produktion_heute_archiv[0]['Avg'], 2);
+                    foreach($produktion_heute_archiv as $Gesamt) {
+                        $produktion_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($produktion_heute_Avg)) 
+                    {
+                    $produktion_heute_kWh = array_sum($produktion_heute_Avg);
+                    }
+                    else {
+                        $produktion_heute_kWh = 0;
+                    }
+                    $produktion = round($produktion_heute_kWh, 2);
                 }
             }
+
 
             $importID = $this->ReadPropertyInteger('ImportWert');
             $import = 0; // Standardwert setzen
             
             if (IPS_VariableExists($importID) && AC_GetLoggingStatus($archivID, $importID)) {
-                $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, $aggregation, $zeit, $ende, 0);
                 if (!empty($import_heute_archiv)) {
-                    $import = round($import_heute_archiv[0]['Avg'], 2);
+                    foreach($import_heute_archiv as $Gesamt) {
+                        $import_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($import_heute_Avg)) 
+                    {
+                    $import_heute_kWh = array_sum($import_heute_Avg);
+                    }
+                    else {
+                        $import_heute_kWh = 0;
+                    }
+                    $import = round($import_heute_kWh, 2);
                 }
             }
+
             $verbrauchID = $this->ReadPropertyInteger('VerbrauchWert');
             $verbrauch = 0; // Standardwert setzen
             
             if (IPS_VariableExists($verbrauchID) && AC_GetLoggingStatus($archivID, $verbrauchID)) {
-                $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, $aggregation, $zeit, $ende, 0);
                 if (!empty($verbrauch_heute_archiv)) {
-                    $verbrauch = round($verbrauch_heute_archiv[0]['Avg'], 2);
+                    foreach($verbrauch_heute_archiv as $Gesamt) {
+                        $verbrauch_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($verbrauch_heute_Avg)) 
+                    {
+                    $verbrauch_heute_kWh = array_sum($verbrauch_heute_Avg);
+                    }
+                    else {
+                        $verbrauch_heute_kWh = 0;
+                    }
+                    $verbrauch= round($verbrauch_heute_kWh, 2);
                 }
                                             
             }
-      
-
 
             $exportID = $this->ReadPropertyInteger('ExportWert');
             $export = 0; // Standardwert setzen
             
             if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
-                $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, 1 /* Täglich */, strtotime("today 00:00"), time(), 0);
+                $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, $aggregation, $zeit, $ende, 0);
                 if (!empty($export_heute_archiv)) {
-                    $export = round($export_heute_archiv[0]['Avg'], 2);
+                    foreach($export_heute_archiv as $Gesamt) {
+                        $export_heute_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($export_heute_Avg)) 
+                    {
+                    $export_heute_kWh = array_sum($export_heute_Avg);
+                    }
+                    else {
+                        $export_heute_kWh = 0;
+                    }
+                    $export= round($export_heute_kWh, 2);
                 }
             }
 

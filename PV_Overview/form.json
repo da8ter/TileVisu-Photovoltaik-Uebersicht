@@ -215,6 +215,18 @@
               "allowTransparent": "false",
               "name": "EigenproduktionVerlaufFarbe2",
               "caption": "Self-production bar color 2"
+            },
+            {
+              "type": "SelectColor",
+              "allowTransparent": "false",
+              "name": "ButtonFarbe1",
+              "caption": "Button active"
+            },
+            {
+              "type": "SelectColor",
+              "allowTransparent": "false",
+              "name": "ButtonFarbe2",
+              "caption": "Button inactive"
             }
           ]
         },
@@ -243,6 +255,16 @@
               "minimum": 0.5,
               "maximum": 10.0,
               "suffix": "em"
+            }
+          ]
+        },
+        {
+          "type": "RowLayout",
+          "items": [
+            {
+              "type": "CheckBox",
+              "name": "ButtonSwitch",
+              "caption": "Display Time Period Button"
             }
           ]
         }
