@@ -42,6 +42,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->EnableAction("ZeitraumStart");
         $this->RegisterVariableInteger("ZeitraumEnde", "Zeitraum Ende" , "UnixTimestamp");
         $this->EnableAction("ZeitraumEnde");
+        $this->RegisterPropertyBoolean("ButtonSwitch", 0);
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
         $this->SetVisualizationType(1);
     }
@@ -139,12 +140,12 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                          }
                          elseif ($startzeit == 3) {
                             $zeit = strtotime("first day of this month 00:00");
-                            $aggregation = 3;
+                            $aggregation = 2;
                             $ende = time();
                          }
                          elseif ($startzeit == 4) {
                             $zeit = strtotime("first day of January this year 00:00");
-                            $aggregation = 4;
+                            $aggregation = 2;
                             $ende = time();
                          }
                          elseif ($startzeit == 5) {
@@ -337,6 +338,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 }
             }
             $this->UpdateVisualizationValue(json_encode(['zeitraum' => $this->ReadAttributeInteger('Zeitraum')]));
+            $this->UpdateVisualizationValue(json_encode(['buttonswitch' => $this->ReadPropertyBoolean('ButtonSwitch')]));
         }
     }
 
@@ -389,24 +391,23 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $result['eigenproduktionverlauffarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EigenproduktionVerlaufFarbe2'));
             $result['buttonfarbe1'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ButtonFarbe1'));
             $result['buttonfarbe2'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ButtonFarbe2'));
-            $result['bildtransparenz'] =  $this->ReadPropertyFloat('Bildtransparenz');
+            $result['bildtransparenz'] = $this->ReadPropertyFloat('Bildtransparenz');
             $result['kachelhintergrundfarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('Kachelhintergrundfarbe'));
             $result['schriftfarbebalken'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('SchriftfarbeBalken'));
             $result['schriftfarbesub'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('SchriftfarbeSub'));
-            $result['schriftgroessebalken'] =  $this->ReadPropertyFloat('SchriftgroesseBalken');
-            $result['schriftgroessesub'] =  $this->ReadPropertyFloat('SchriftgroesseSub');
-            $result['eckenradius'] =  $this->ReadPropertyFloat('Eckenradius');
+            $result['schriftgroessebalken'] = $this->ReadPropertyFloat('SchriftgroesseBalken');
+            $result['schriftgroessesub'] = $this->ReadPropertyFloat('SchriftgroesseSub');
+            $result['eckenradius'] = $this->ReadPropertyFloat('Eckenradius');
             $result['einspeisungfarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('EinspeisungFarbe'));
             $result['zukauffarbe'] =  '#' . sprintf('%06X', $this->ReadPropertyInteger('ZukaufFarbe'));
-            $result['produktionlabel'] =  $this->ReadPropertyString('ProduktionLabel');
-            $result['exportlabel'] =  $this->ReadPropertyString('ExportLabel');
-            $result['importlabel'] =  $this->ReadPropertyString('ImportLabel');
-            $result['verbrauchlabel'] =  $this->ReadPropertyString('VerbrauchLabel');
-            $result['eigenverbrauchlabel'] =  $this->ReadPropertyString('EigenverbrauchLabel');
-            $result['eigenproduktionlabel'] =  $this->ReadPropertyString('EigenproduktionLabel');
+            $result['produktionlabel'] = $this->ReadPropertyString('ProduktionLabel');
+            $result['exportlabel'] = $this->ReadPropertyString('ExportLabel');
+            $result['importlabel'] = $this->ReadPropertyString('ImportLabel');
+            $result['verbrauchlabel'] = $this->ReadPropertyString('VerbrauchLabel');
+            $result['eigenverbrauchlabel'] = $this->ReadPropertyString('EigenverbrauchLabel');
+            $result['eigenproduktionlabel'] = $this->ReadPropertyString('EigenproduktionLabel');
             $result['zeitraum'] =  $this->ReadAttributeInteger('Zeitraum');
-           
-
+            $result['buttonswitch'] = $this->ReadPropertyBoolean('ButtonSwitch');
 
             
             $archivID = IPS_GetInstanceListByModuleID('{43192F0B-135B-4CE7-A0A7-1475603F3060}')[0];
@@ -442,12 +443,12 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 }
                 elseif ($startzeit == 3) {
                 $zeit = strtotime("first day of this month 00:00");
-                $aggregation = 3;
+                $aggregation = 2;
                 $ende = time();
                 }
                 elseif ($startzeit == 4) {
                 $zeit = strtotime("first day of January this year 00:00");
-                $aggregation = 4;
+                $aggregation = 2;
                 $ende = time();
                 }
                 elseif ($startzeit == 5) {

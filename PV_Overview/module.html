@@ -466,6 +466,10 @@
                     case 'eckenradius':
                         root.style.setProperty('--eckenradius', decodedData[parameter] + 'px');
                         break;
+                    case 'buttonswitch':
+                        buttondiv.classList.remove('hidden');
+                        buttondiv.classList.add('buttondiv');
+                        break;
                     default:
                         if (element) {
                             element.textContent = decodedData[parameter];
