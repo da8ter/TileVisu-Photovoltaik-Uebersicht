@@ -399,7 +399,18 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
                 $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, $aggregation, $zeit, $ende, 0);
                 if (!empty($SpeicherEntladung_heute_archiv)) {
-                    $entladungSpeicher = round($SpeicherEntladung_heute_archiv[0]['Avg'], 2);
+                    foreach($SpeicherEntladung_heute_archiv as $Gesamt) {
+                        $SpeicherEntladung_Avg[] = $Gesamt['Avg'];
+                    }
+                    //Array auf Inhalt prüfen 
+                    if (!empty($SpeicherEntladung_Avg)) 
+                    {
+                    $SpeicherEntladung_kWh = array_sum($SpeicherEntladung_Avg);
+                    }
+                    else {
+                        $SpeicherEntladung_kWh = 0;
+                    }
+                    $entladungSpeicher = round($SpeicherEntladung_kWh, 2);
                 }
             }
             $SpeicherBeladungID = $this->ReadPropertyInteger('SpeicherBeladungWert');
