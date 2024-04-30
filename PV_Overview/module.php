@@ -40,9 +40,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
         $this->RegisterAttributeInteger("Zeitraum", 1);
         $this->RegisterVariableInteger("ZeitraumStart", "Zeitraum Start" , "UnixTimestamp");
         $this->EnableAction("ZeitraumStart");
-        $this->RegisterVariableInteger("ZeitraumStart", "Zeitraum Start" , "UnixTimestamp");
-        $this->EnableAction("ZeitraumEnde");
         $this->RegisterVariableInteger("ZeitraumEnde", "Zeitraum Ende" , "UnixTimestamp");
+        $this->EnableAction("ZeitraumEnde");
         // Visualisierungstyp auf 1 setzen, da wir HTML anbieten möchten
         $this->SetVisualizationType(1);
     }
