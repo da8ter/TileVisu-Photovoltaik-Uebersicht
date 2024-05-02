@@ -442,7 +442,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 $ende = time();
                 }
                 elseif ($startzeit == 3) {
-                $zeit = strtotime("first day of this month 00:01");
+                $zeit = strtotime("first day of this month 00:00");
                 $aggregation = 1;
                 $ende = time();
                 }
