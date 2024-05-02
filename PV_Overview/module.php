@@ -132,32 +132,32 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                             $zeit = strtotime("today 00:00");
                             $ende = time();
                             $aggregation = 1;
-                         }
-                         elseif ($startzeit == 2) {
+                            }
+                            elseif ($startzeit == 2) {
                             $zeit = strtotime("Monday this week 00:00");
                             $aggregation = 2;
                             $ende = time();
-                         }
-                         elseif ($startzeit == 3) {
+                            }
+                            elseif ($startzeit == 3) {
                             $zeit = strtotime("first day of this month 00:00");
                             $aggregation = 2;
                             $ende = time();
-                         }
-                         elseif ($startzeit == 4) {
+                            }
+                            elseif ($startzeit == 4) {
                             $zeit = strtotime("first day of January this year 00:00");
                             $aggregation = 2;
                             $ende = time();
-                         }
-                         elseif ($startzeit == 5) {
+                            }
+                            elseif ($startzeit == 5) {
                             $zeit = $userStart;
                             $aggregation = 1;
                             $ende = $userEnde;
-                         }
-                         else  {
+                            }
+                            else  {
                             $zeit = strtotime("today 00:00");
                             $aggregation = 1;
                             $ende = time();
-                         }
+                            }
 
 
                          if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
