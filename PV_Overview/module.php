@@ -437,7 +437,7 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                 $aggregation = 1;
                 }
                 elseif ($startzeit == 2) {
-                $zeit = strtotime("Monday this week 00:00");
+                $zeit = strtotime("Monday this week 00:01");
                 $aggregation = 1;
                 $ende = time();
                 }
