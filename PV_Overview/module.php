@@ -135,17 +135,17 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                             }
                             elseif ($startzeit == 2) {
                             $zeit = strtotime("Monday this week 00:00");
-                            $aggregation = 2;
+                            $aggregation = 1;
                             $ende = time();
                             }
                             elseif ($startzeit == 3) {
                             $zeit = strtotime("first day of this month 00:00");
-                            $aggregation = 2;
+                            $aggregation = 1;
                             $ende = time();
                             }
                             elseif ($startzeit == 4) {
                             $zeit = strtotime("first day of January this year 00:00");
-                            $aggregation = 2;
+                            $aggregation = 1;
                             $ende = time();
                             }
                             elseif ($startzeit == 5) {
@@ -434,21 +434,21 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if ($startzeit == 1) {
                 $zeit = strtotime("today 00:00");
                 $ende = time();
-                $aggregation = 5;
+                $aggregation = 1;
                 }
                 elseif ($startzeit == 2) {
                 $zeit = strtotime("Monday this week 00:00");
-                $aggregation = 2;
+                $aggregation = 1;
                 $ende = time();
                 }
                 elseif ($startzeit == 3) {
                 $zeit = strtotime("first day of this month 00:00");
-                $aggregation = 5;
+                $aggregation = 1;
                 $ende = time();
                 }
                 elseif ($startzeit == 4) {
                 $zeit = strtotime("first day of January this year 00:00");
-                $aggregation = 2;
+                $aggregation = 1;
                 $ende = time();
                 }
                 elseif ($startzeit == 5) {
