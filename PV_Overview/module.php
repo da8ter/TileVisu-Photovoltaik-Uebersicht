@@ -113,8 +113,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
 
                         $SpeicherEntladungID = $this->ReadPropertyInteger('SpeicherEntladungWert');
                         $entladungSpeicher = 0; // Standardwert setzen 
-                        $userStart = $this->GetValue("ZeitraumStart");
-                        $userEnde = $this->GetValue("ZeitraumEnde");
+                        $userStart = strtotime($this->GetValue("ZeitraumStart"));
+                        $userEnde = strtotime($this->GetValue("ZeitraumEnde"));
 
 
                         if (empty($userStart)) {
@@ -417,8 +417,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             $SpeicherEntladungID = $this->ReadPropertyInteger('SpeicherEntladungWert');
             $entladungSpeicher = 0; // Standardwert setzen 
 
-            $userStart = $this->GetValue("ZeitraumStart");
-            $userEnde = $this->GetValue("ZeitraumEnde");
+            $userStart = strtotime($this->GetValue("ZeitraumStart"));
+            $userEnde = strtotime($this->GetValue("ZeitraumEnde"));
 
             if (empty($userStart)) {
                 $userStart = strtotime("today 00:00");
