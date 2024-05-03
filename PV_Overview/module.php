@@ -132,32 +132,32 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
                             $zeit = strtotime("today 00:00");
                             $ende = time();
                             $aggregation = 1;
-                         }
-                         elseif ($startzeit == 2) {
+                            }
+                            elseif ($startzeit == 2) {
                             $zeit = strtotime("Monday this week 00:00");
                             $aggregation = 1;
                             $ende = time();
-                         }
-                         elseif ($startzeit == 3) {
+                            }
+                            elseif ($startzeit == 3) {
                             $zeit = strtotime("first day of this month 00:00");
                             $aggregation = 1;
                             $ende = time();
-                         }
-                         elseif ($startzeit == 4) {
+                            }
+                            elseif ($startzeit == 4) {
                             $zeit = strtotime("first day of January this year 00:00");
-                            $aggregation = 2;
+                            $aggregation = 1;
                             $ende = time();
-                         }
-                         elseif ($startzeit == 5) {
+                            }
+                            elseif ($startzeit == 5) {
                             $zeit = $userStart;
                             $aggregation = 1;
                             $ende = $userEnde;
-                         }
-                         else  {
+                            }
+                            else  {
                             $zeit = strtotime("today 00:00");
                             $aggregation = 1;
                             $ende = time();
-                         }
+                            }
 
 
                          if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
@@ -466,8 +466,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($SpeicherEntladungID) && AC_GetLoggingStatus($archivID, $SpeicherEntladungID)) {
                 $SpeicherEntladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherEntladungID, $aggregation, $zeit, $ende, 0);
                 if (!empty($SpeicherEntladung_heute_archiv)) {
-                    foreach($SpeicherEntladung_heute_archiv as $Gesamt) {
-                        $SpeicherEntladung_Avg[] = $Gesamt['Avg'];
+                    foreach($SpeicherEntladung_heute_archiv as $Gesamt1) {
+                        $SpeicherEntladung_Avg[] = $Gesamt1['Avg'];
                     }
                     //Array auf Inhalt prüfen 
                     if (!empty($SpeicherEntladung_Avg)) 
@@ -486,8 +486,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($SpeicherBeladungID) && AC_GetLoggingStatus($archivID, $SpeicherBeladungID)) {
                 $SpeicherBeladung_heute_archiv = AC_GetAggregatedValues($archivID, $SpeicherBeladungID, $aggregation, $zeit, $ende, 0);
                 if (!empty($SpeicherBeladung_heute_archiv)) {
-                    foreach($SpeicherBeladung_heute_archiv as $Gesamt) {
-                        $SpeicherBeladung_Avg[] = $Gesamt['Avg'];
+                    foreach($SpeicherBeladung_heute_archiv as $Gesamt2) {
+                        $SpeicherBeladung_Avg[] = $Gesamt2['Avg'];
                     }
                     //Array auf Inhalt prüfen 
                     if (!empty($SpeicherBeladung_Avg)) 
@@ -507,8 +507,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($produktionsID) && AC_GetLoggingStatus($archivID, $produktionsID)) {
                 $produktion_heute_archiv = AC_GetAggregatedValues($archivID, $produktionsID, $aggregation, $zeit, $ende, 0);
                 if (!empty($produktion_heute_archiv)) {
-                    foreach($produktion_heute_archiv as $Gesamt) {
-                        $produktion_heute_Avg[] = $Gesamt['Avg'];
+                    foreach($produktion_heute_archiv as $Gesamt3) {
+                        $produktion_heute_Avg[] = $Gesamt3['Avg'];
                     }
                     //Array auf Inhalt prüfen 
                     if (!empty($produktion_heute_Avg)) 
@@ -529,8 +529,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($importID) && AC_GetLoggingStatus($archivID, $importID)) {
                 $import_heute_archiv = AC_GetAggregatedValues($archivID, $importID, $aggregation, $zeit, $ende, 0);
                 if (!empty($import_heute_archiv)) {
-                    foreach($import_heute_archiv as $Gesamt) {
-                        $import_heute_Avg[] = $Gesamt['Avg'];
+                    foreach($import_heute_archiv as $Gesamt4) {
+                        $import_heute_Avg[] = $Gesamt4['Avg'];
                     }
                     //Array auf Inhalt prüfen 
                     if (!empty($import_heute_Avg)) 
@@ -550,8 +550,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($verbrauchID) && AC_GetLoggingStatus($archivID, $verbrauchID)) {
                 $verbrauch_heute_archiv = AC_GetAggregatedValues($archivID, $verbrauchID, $aggregation, $zeit, $ende, 0);
                 if (!empty($verbrauch_heute_archiv)) {
-                    foreach($verbrauch_heute_archiv as $Gesamt) {
-                        $verbrauch_heute_Avg[] = $Gesamt['Avg'];
+                    foreach($verbrauch_heute_archiv as $Gesamt5) {
+                        $verbrauch_heute_Avg[] = $Gesamt5['Avg'];
                     }
                     //Array auf Inhalt prüfen 
                     if (!empty($verbrauch_heute_Avg)) 
@@ -572,8 +572,8 @@ class TileVisuPhotovoltaikOverviewTile extends IPSModule
             if (IPS_VariableExists($exportID) && AC_GetLoggingStatus($archivID, $exportID)) {
                 $export_heute_archiv = AC_GetAggregatedValues($archivID, $exportID, $aggregation, $zeit, $ende, 0);
                 if (!empty($export_heute_archiv)) {
-                    foreach($export_heute_archiv as $Gesamt) {
-                        $export_heute_Avg[] = $Gesamt['Avg'];
+                    foreach($export_heute_archiv as $Gesamt6) {
+                        $export_heute_Avg[] = $Gesamt6['Avg'];
                     }
                     //Array auf Inhalt prüfen 
                     if (!empty($export_heute_Avg)) 
