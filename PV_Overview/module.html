@@ -129,19 +129,25 @@
 
         .balken_links_eigenverbrauch {
             width: var(--eigenverbrauch_prozent);
-            background: linear-gradient(to right, #28cdab 0%, #208a74 50%, #28cdab 100%);
+            background: repeating-linear-gradient(to right, #28cdab 0%, #208a74 50%, #28cdab 100%);
+            background-size: 200% auto;
+            background-position: 0 100%;
             height: 1.8em;
             border-radius: 0px 0px 0px 0px;
+            animation: none;
         }
 
         .balken_links_eigenproduktion {
             display: flex;
             justify-content: right;
             width: var(--eigenproduktion_prozent);
-            background: linear-gradient(to right, #28cdab 0%, #208a74 50%, #28cdab 100%);
+            background: repeating-linear-gradient(to right, #28cdab 0%, #208a74 50%, #28cdab 100%);
+            background-size: 200% auto;
+            background-position: 0 100%;
             height: 1.8em;
             border-radius: 0px 0px 0px 0px;
-}
+            animation: none;
+        }
 
 
         .balken_links_eigenproduktion_speicher {
