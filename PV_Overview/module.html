@@ -191,18 +191,15 @@
         }
 
         .balken_links_text {
-    position: absolute; /* Beibehalten */
-    top: 50%; /* Positionieren bei 50% der Höhe */
-    left: 2%;
-    transform: translate(0, -50%); /* Vertikales Zentrieren */
-    color: var(--schriftfarbebalken);
-    z-index: 2;
-    padding: 2px;
-    font-size: var(--schriftgroessebalken);
-    display: flex; /* Flexbox aktivieren */
-    align-items: center; /* Vertikales Zentrieren */
-    justify-content: center; /* Optional, falls horizontal zentriert werden soll */
-}
+            position: absolute;
+            top: 50%;
+            left: 2%;
+            transform: translate(-0%, -50%);
+            color: var(--schriftfarbebalken);
+            z-index: 2;
+            padding: 2px;
+            font-size: var(--schriftgroessebalken);
+        }
 
         .balken_links_text_finish {
             position: absolute;
